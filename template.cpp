@@ -36,7 +36,7 @@ extern "C"
 #include "wglext.h"
 #endif
 
-namespace Tmpl8 { 
+namespace tmpl8 { 
 
 double timer::inv_freq = 1;
 
@@ -153,7 +153,7 @@ void NotifyUser( char* s )
 
 }
 
-using namespace Tmpl8;
+using namespace tmpl8;
 using namespace std;
 
 #ifdef ADVANCEDGL

@@ -11,8 +11,8 @@
 #include <cstdlib>
 #include <cstdio>
 
-constexpr int ScreenWidth = 800;
-constexpr int ScreenHeight = 512;
+constexpr int ScreenWidth = 1920;
+constexpr int ScreenHeight = 1080;
 // #define FULLSCREEN
 // #define ADVANCEDGL	// faster if your system supports it. Switches SDL2's texture buffer out for OpenGL texture buffer with mappings to CPU Memory. 
 
@@ -34,7 +34,7 @@ typedef __int64 int64;
 typedef unsigned __int64 uint64;
 typedef unsigned int uint;
 
-namespace Tmpl8 {
+namespace tmpl8 {
 
 template <typename T>
 constexpr T Min(T a, T b) { return (a > b) ? b : a; }
@@ -88,6 +88,7 @@ public:
 	vec2 operator - ( const vec2& operand ) const { return vec2( x - operand.x, y - operand.y ); }
 	vec2 operator * ( const vec2& operand ) const { return vec2( x * operand.x, y * operand.y ); }
 	vec2 operator * ( float operand ) const { return vec2( x * operand, y * operand ); }
+	vec2 operator / (float operand) const { return vec2(x / operand, y / operand); }
 	void operator -= ( const vec2& a ) { x -= a.x; y -= a.y; }
 	void operator += ( const vec2& a ) { x += a.x; y += a.y; }
 	void operator *= ( const vec2& a ) { x *= a.x; y *= a.y; }

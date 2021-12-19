@@ -3,7 +3,7 @@
 
 #pragma once
 
-namespace Tmpl8 {
+namespace tmpl8 {
 
 constexpr int RedMask = 0xff0000;
 constexpr int GreenMask = 0x00ff00;
