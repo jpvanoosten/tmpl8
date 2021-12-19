@@ -13,6 +13,11 @@ public:
 	void SetTarget( Surface* surface ) { screen = surface; }
 	void Init();
 	void Shutdown();
+	/// <summary>
+	/// Perform physics integration on the balls.
+	/// </summary>
+	/// <param name="deltaTime">The elapsed time (in seconds).</param>
+	void Physics(float deltaTime);
 	void Tick( float deltaTime );
 	void MouseUp( int button ) { /* implement if you want to detect mouse button presses */ }
 	void MouseDown( int button ) { /* implement if you want to detect mouse button presses */ }

@@ -2,6 +2,8 @@
 #include "surface.h"
 #include "template.h"
 
+#include <tuple>
+
 class Ball
 {
 public:
@@ -16,6 +18,9 @@ public:
     void SetPos(const tmpl8::vec2& pos);
     const tmpl8::vec2& GetPos() const;
     tmpl8::vec2& GetPos();
+
+    // Get the position of the ball at some time.
+    tmpl8::vec2 GetPosAt(float deltaTime) const;
 
     void SetVelocity(const tmpl8::vec2& vel);
     const tmpl8::vec2& GetVelocity() const;
@@ -48,8 +53,12 @@ public:
     // Get the size of the collision radius of the ball.
     float GetRadius() const;
 
-    // Check to see if this ball collides with another ball.
-    bool Collides(const Ball& ball);
+    // Simple collision detection.
+    // Returns true if this ball collides with another.
+    bool Collides(const Ball& ball) const;
+    // Advanced collision detection.
+    // If they will collide, then t will contain the moment of collision.
+    bool Collides(const Ball& ball, float& t) const;
 
 private:
     // The sprite used to draw all of the balls.

@@ -32,6 +32,12 @@ tmpl8::vec2& Ball::GetPos()
     return pos;
 }
 
+tmpl8::vec2 Ball::GetPosAt(float deltaTime) const
+{
+    return pos + vel * deltaTime;
+}
+
+
 void Ball::SetVelocity(const tmpl8::vec2& vel)
 {
     this->vel = vel;
@@ -112,7 +118,7 @@ float Ball::GetRadius() const
     return radius;
 }
 
-bool Ball::Collides(const Ball& ball)
+bool Ball::Collides(const Ball& ball) const
 {
     // First compute the squared distence between each ball.
     float d = (ball.pos - pos).sqrLentgh();
@@ -123,9 +129,35 @@ bool Ball::Collides(const Ball& ball)
     return d <= (r * r);
 }
 
+bool Ball::Collides(const Ball& ball, float& t) const
+{
+    // Source: Real-time Collision Detection, Section 5.5 (Ericson, C. 2005)
+    tmpl8::vec2 s = ball.pos - pos; // Difference in positions (delta)
+    tmpl8::vec2 v = ball.vel - vel; // Difference in velocities
+    float r = ball.radius + radius; // Sum of radii
+    float c = s.dot(s) - r * r;
+    if (c < 0.0f) {
+        // Balls are initally overlapping.
+        t = 0.0f;
+        return true;
+    }
+    float a = v.dot(v);
+    if (a < 0.00001f) return false; // Balls are not moving relative to eachother.
+    float b = v.dot(s);
+    if (b >= 0.0f) return false; // Balls are not moving towards eachother.
+    float d = b * b - a * c;
+    if (d < 0.0f) return false; // No real roots, balls do not intersect.
+
+    t = (-b - sqrtf(d)) / a;
+    return true;
+}
+
 void Ball::Update(float deltaTime)
 {
-    pos += vel * deltaTime;
+    if (vel.sqrLentgh() > 1.0f)
+    {
+        pos += vel * deltaTime;
+    }
 }
 
 void Ball::Draw(tmpl8::Surface* target) const
