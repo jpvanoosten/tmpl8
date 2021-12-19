@@ -85,8 +85,8 @@ namespace tmpl8
                 float t;
                 if (bi.Collides(bj, t) && t < deltaTime) // Check collision.
                 {
-                    vec2 pi = bi.GetPos();
-                    vec2 pj = bj.GetPos();
+                    vec2 pi = bi.GetPosAt(t);
+                    vec2 pj = bj.GetPosAt(t);
 
                     vec2 vi = bi.GetVelocity();
                     vec2 vj = bj.GetVelocity();
@@ -115,8 +115,8 @@ namespace tmpl8
                     vi = xi * (mi - mj) / mij + xj * (2.0f * mj) / mij + yi;
                     vj = xi * (2.0f * mi) / mij + xj * (mj - mi) / mij + yj;
 
-                    bi.SetVelocity(vi);
-                    bj.SetVelocity(vj);
+                    bi.SetVelocity(vi * 0.98f);
+                    bj.SetVelocity(vj * 0.98f);
 #ifdef _DEBUG
                     {
                         // Draw a debug line for the new velocities.
