@@ -132,7 +132,7 @@ bool Ball::Collides(const Ball& ball) const
 bool Ball::Collides(const Ball& ball, float& t) const
 {
     // Source: Real-time Collision Detection, Section 5.5 (Ericson, C. 2005)
-    tmpl8::vec2 s = ball.pos - pos; // Difference in positions (delta)
+    tmpl8::vec2 s = ball.pos - pos; // Difference in positions
     tmpl8::vec2 v = ball.vel - vel; // Difference in velocities
     float r = ball.radius + radius; // Sum of radii
     float c = s.dot(s) - r * r;
@@ -154,7 +154,7 @@ bool Ball::Collides(const Ball& ball, float& t) const
 
 void Ball::Update(float deltaTime)
 {
-    if (vel.sqrLentgh() > 1.0f)
+    if (vel.sqrLentgh() > 10.0f)
     {
         pos += vel * deltaTime;
     }

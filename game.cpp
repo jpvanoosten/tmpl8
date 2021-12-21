@@ -115,6 +115,7 @@ namespace tmpl8
                     vi = xi * (mi - mj) / mij + xj * (2.0f * mj) / mij + yi;
                     vj = xi * (2.0f * mi) / mij + xj * (mj - mi) / mij + yj;
 
+                    // Update new velocities (with damping).
                     bi.SetVelocity(vi * 0.98f);
                     bj.SetVelocity(vj * 0.98f);
 #ifdef _DEBUG
@@ -206,7 +207,7 @@ namespace tmpl8
             if (hitBottom)
             {
                 ball.SetBottom(ScreenHeight);
-                vel *= vec2(0.995f, -damping);
+                vel *= vec2(0.9f, -damping);
             }
             if (hitLeft)
             {
