@@ -18,18 +18,30 @@ namespace Tmpl8
 	{
 	}
 
-	static Sprite rotatingGun(new Surface("assets/aagun.tga"), 36);
-	static int frame = 0;
-
-	// -----------------------------------------------------------
-	// Main application tick function
-	// -----------------------------------------------------------
+	Surface noise("assets/noise.png");
+	int gx = 400, gy = 0;
 	void Game::Tick(float deltaTime)
 	{
-		int a = 100;
-		int b = 200;
-		int* c = &a;
-		*c = 300;
-		int w = 0;
+		screen->Clear(0);
+		noise.CopyTo(screen, 0, 0);
+
+		Pixel address = *(screen->GetBuffer() + (screen->GetWidth() * (gy + 1)) + gx);
+		if ((address & 0x00ffffff) == 0) // Mask the alpha channel before you check for black.
+		{
+			++gy;
+		}
+		else if (gy % 2 == 0)
+		{
+			++gx;
+		}
+		else
+		{
+			--gx;
+		}
+
+		gy %= screen->GetHeight();
+
+		// Use bar to draw a 2x2 green dot.
+		screen->Bar(gx-1, gy-1, gx+1, gy+1, 0x00ff00);
 	}
 };
