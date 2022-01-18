@@ -1,40 +1,25 @@
 #include "game.h"
 #include "surface.h"
-#include <cstdio> //printf
+#include "template.h"
 
 namespace Tmpl8
 {
-	// -----------------------------------------------------------
-	// Initialize the application
-	// -----------------------------------------------------------
-	void Game::Init()
-	{
-	}
-	
-	// -----------------------------------------------------------
-	// Close down application
-	// -----------------------------------------------------------
-	void Game::Shutdown()
-	{
-	}
+    float x = ScreenWidth / 2.0f, y = ScreenHeight / 2.0f;
 
-	static Sprite rotatingGun(new Surface("assets/aagun.tga"), 36);
-	static int frame = 0;
+    void Game::Init() {}
 
-	// -----------------------------------------------------------
-	// Main application tick function
-	// -----------------------------------------------------------
-	void Game::Tick(float deltaTime)
-	{
-		// clear the graphics window
-		screen->Clear(0);
-		// print something in the graphics window
-		screen->Print("hello world", 2, 2, 0xffffff);
-		// print something to the text window
-		printf("this goes to the console window.\n");
-		// draw a sprite
-		rotatingGun.SetFrame(frame);
-		rotatingGun.Draw(screen, 100, 100);
-		if (++frame == 36) frame = 0;
-	}
+    void Game::Shutdown() {}
+
+    void Game::Tick(float deltaTime)
+    {
+        screen->Clear(0);
+        screen->Line(mousex, 0, mousex, screen->GetHeight() - 1, 0xff0000);
+        screen->Line(0, mousey, screen->GetWidth() - 1, mousey, 0xff0000);
+
+        float dx = x - mousex, dy = y - mousey;
+        float dist = sqrtf(dx * dx + dy * dy);
+        if (dist < 10)
+            x += dx / dist, y += dy / dist;
+        screen->Plot(x, y, 0xffffff);
+    }
 };

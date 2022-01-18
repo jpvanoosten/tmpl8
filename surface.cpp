@@ -184,9 +184,45 @@ void Surface::Line( float x1, float y1, float x2, float y2, Pixel c )
 	}
 }
 
-void Surface::Plot( int x, int y, Pixel c )
-{ 
+void Surface::Plot(int x, int y, Pixel c)
+{
 	if ((x >= 0) && (y >= 0) && (x < m_Width) && (y < m_Height)) m_Buffer[x + y * m_Pitch] = c;
+}
+
+Pixel ColourWeight(Pixel c, float w)
+{
+	assert(w >= 0.0f && w <= 1.0f);
+
+	float r = static_cast<float>((c & RedMask) >> 16);
+	float g = static_cast<float>((c & GreenMask) >> 8);
+	float b = static_cast<float>((c & BlueMask) >> 0);
+
+	r *= w;
+	g *= w;
+	b *= w;
+
+	return static_cast<Pixel>(r) << 16 | static_cast<Pixel>(g) << 8 | static_cast<Pixel>(b) << 0;
+}
+
+void Surface::Plot(float x, float y, Pixel c)
+{
+	int x1 = x;
+	int y1 = y;
+	int x2 = x1 + 1;
+	int y2 = y1 + 1;
+
+	float w1 = fmodf(x, 1);
+	float w2 = fmodf(y, 1);
+	float w3 = 1.0f - w1;
+	float w4 = 1.0f - w2;
+
+	//float sum = (w1 + w3) * (w2 + w4);
+	//assert(fabsf(1.0f - sum) < 0.00000001f);
+
+	Plot(x1, y1, ColourWeight(c, w3 * w4));
+	Plot(x2, y1, ColourWeight(c, w1 * w4));
+	Plot(x1, y2, ColourWeight(c, w3 * w2));
+	Plot(x2, y2, ColourWeight(c, w1 * w2));
 }
 
 void Surface::Box( int x1, int y1, int x2, int y2, Pixel c )
