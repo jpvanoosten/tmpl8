@@ -34,7 +34,7 @@ Surface::Surface( int a_Width, int a_Height ) :
 	m_Buffer = static_cast<Pixel*>(MALLOC64( (unsigned int)a_Width * (unsigned int)a_Height * sizeof( Pixel )));
 }
 
-Surface::Surface( char* a_File )
+Surface::Surface( const char* a_File )
 {
 	FILE* f = fopen( a_File, "rb" );
 	if (!f) 
@@ -48,7 +48,7 @@ Surface::Surface( char* a_File )
 	LoadImage( a_File );
 }
 
-void Surface::LoadImage( char* a_File )
+void Surface::LoadImage( const char* a_File )
 {
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	fif = FreeImage_GetFileType( a_File, 0 );

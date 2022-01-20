@@ -13,10 +13,15 @@ public:
 	void MouseUp( int button ) { /* implement if you want to detect mouse button presses */ }
 	void MouseDown( int button ) { /* implement if you want to detect mouse button presses */ }
 	void MouseMove( int x, int y ) { /* implement if you want to detect mouse movement */ }
-	void KeyUp( int key ) { /* implement if you want to handle keys */ }
-	void KeyDown( int key ) { /* implement if you want to handle keys */ }
+	void KeyUp(int key);
+	void KeyDown(int key);
 private:
 	Surface* screen;
+
+	float m_Up = 0.0f;
+	float m_Left = 0.0f;
+	float m_Right = 0.0f;
+	float m_Down = 0.0f;
 };
 
 }; // namespace Tmpl8
