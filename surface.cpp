@@ -206,6 +206,8 @@ Pixel ColourWeight(Pixel c, float w)
 
 void Surface::Plot(float x, float y, Pixel c)
 {
+	if (x < 0 || x >= m_Width || y < 0 || y >= m_Height) return;
+
 	int x1 = x;
 	int y1 = y;
 	int x2 = x1 + 1;
