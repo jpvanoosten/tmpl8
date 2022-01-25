@@ -1,12 +1,41 @@
 #include "game.h"
 #include "surface.h"
 #include "template.h"
-#include "TileMap.h"
 #include <SDL_scancode.h>
 
 namespace Tmpl8
 {
     float px = 32.0f, py = 32.0f;
+
+    Surface tiles("assets/nc2tiles.png");
+    Sprite tank(new Surface("assets/ctankbase.tga"), 16);
+
+    static const Tile WATER_TILE = { true, 10, 2, 32, 32 };
+    static const Tile PATH_TILE = { false, 5, 1, 32, 32 };
+    static const Tile WATER_BORDER = { true, 11, 2, 32, 32 };
+
+    //char map[5][31] = {
+    //     "kcXkcXkcXkcXkcXkcXkcXkcXkcXkcX",
+    //     "kcXfb fb fb kc kc kc kc kc kc ",
+    //     "kcXfb fb fb fb fb kc kc kc kc ",
+    //     "kcXlcXlc fb fb fb kc kc kc kc ",
+    //     "kcXkcXkcXlcXlcXlcXkcXkcXkc kc "
+    //};
+
+    std::vector<Tile> map = {
+        WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE,WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE,
+        WATER_TILE, PATH_TILE,  PATH_TILE,  PATH_TILE,  WATER_TILE, WATER_TILE,WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE,
+        WATER_TILE, PATH_TILE,  PATH_TILE,  PATH_TILE,  WATER_TILE, WATER_TILE,WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE,
+        WATER_TILE, PATH_TILE,  PATH_TILE,  PATH_TILE,  WATER_TILE, WATER_TILE,WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE,
+        WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE,WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE,
+    };
+
+    Game::Game()
+        : screen(nullptr)
+        , tileMap("assets/nc2tiles.png")
+    {
+        tileMap.SetTiles( map, 10);
+    }
 
     void Game::Init() {}
 
@@ -54,61 +83,24 @@ namespace Tmpl8
 
     void Game::Shutdown() {}
 
-    Surface tiles("assets/nc2tiles.png");
-    Sprite tank(new Surface("assets/ctankbase.tga"), 16);
-
-    char map[5][31] = {
-         "kcXkcXkcXkcXkcXkcXkcXkcXkcXkcX",
-         "kcXfb fb fb kc kc kc kc kc kc ",
-         "kcXfb fb fb fb fb kc kc kc kc ",
-         "kcXlcXlc fb fb fb kc kc kc kc ",
-         "kcXkcXkcXlcXlcXlcXkcXkcXkc kc "
-    };
-
-    void DrawTile(int tx, int ty, Surface* screen, int x, int y)
-    {
-        Pixel* src = tiles.GetBuffer() + 1 + tx * 33 + (1 + ty * 33) * 595;
-        Pixel* dst = screen->GetBuffer() + x + y * 800;
-        for (int i = 0; i < 32; i++, src += 595, dst += 800)
-            for (int j = 0; j < 32; j++)
-                dst[j] = src[j];
-    }
-
-    bool CheckPos(int x, int y)
-    {
-        if (x < 0 || x >= ScreenWidth || y < 0 || y >= ScreenHeight) return false;
-
-        int tx = x / 32, ty = y / 32;
-        return map[ty][tx * 3 + 2] != 'X';
-    }
     void Game::Tick(float deltaTime)
     {
         deltaTime /= 1000.0f;
 
+        static float totalTime = 0.0f;
+        totalTime += deltaTime;
+
         screen->Clear(0);
-        for (int y = 0; y < 5; y++)
-        {
-            for (int x = 0; x < 10; x++)
-            {
-                int tx = map[y][x * 3] - 'a';
-                int ty = map[y][x * 3 + 1] - 'a';
-                DrawTile(tx, ty, screen, x * 32, y * 32);
-            }
-        }
 
-        float nx = px + ( m_Right - m_Left ) * deltaTime * 60.0f, ny = py + ( m_Down - m_Up ) * deltaTime * 60.0f;
+        int2 tileMapSize = tileMap.GetSizeInPixels();
+        int screenWidth = screen->GetWidth();
+        int screenHeight = screen->GetHeight();
 
-        if (CheckPos(nx, ny) && CheckPos(nx + 50, ny + 50) && CheckPos(nx + 50, ny) && CheckPos(nx, ny + 50))
-            px = nx, py = ny;
+        float offsetX = (screenWidth - tileMapSize.x) / 2.0f;
+        float offsetY = (screenHeight - tileMapSize.y) / 2.0f;
 
-        tank.Draw(screen, px, py);
-
-        TileMap tiles("assets/nc2tiles.png", 18, 5);
-
-        auto& tile = tiles[1];
-        if (!tile.isBlocking)
-        {
-
-        }
+        tileMap.SetOffset({offsetX + sinf(totalTime) * 10.0f, offsetY + cosf(totalTime) * 10.0f});
+        
+        tileMap.Draw(*screen);
     }
 };

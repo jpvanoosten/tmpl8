@@ -30,4 +30,7 @@
       <Filter>template code</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\nc2tiles.png" />
+  </ItemGroup>
 </Project>

@@ -1,11 +1,15 @@
 #pragma once
 
+#include "TileMap.h"
+
 namespace Tmpl8 {
 
 class Surface;
 class Game
 {
 public:
+	Game();
+
 	void SetTarget( Surface* surface ) { screen = surface; }
 	void Init();
 	void Shutdown();
@@ -22,6 +26,7 @@ private:
 	float m_Left = 0.0f;
 	float m_Right = 0.0f;
 	float m_Down = 0.0f;
+	TileMap tileMap;
 };
 
 }; // namespace Tmpl8

@@ -350,7 +350,7 @@ Sprite::Sprite( Surface* a_Surface, unsigned int a_NumFrames ) :
 	m_Pitch(  a_Surface->GetWidth() ),
 	m_NumFrames( a_NumFrames ),
 	m_CurrentFrame( 0 ),
-	m_Flags( 0 ),
+	m_Flags( SpriteFlags::NONE ),
 	m_Start( new unsigned int*[a_NumFrames] ),
 	m_Surface( a_Surface )
 {

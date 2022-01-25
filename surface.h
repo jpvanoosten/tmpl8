@@ -81,8 +81,9 @@ class Sprite
 {
 public:
 	// Sprite flags
-	enum
+	enum SpriteFlags
 	{
+		NONE		= 0,
 		FLARE		= (1<< 0),
 		OPFLARE		= (1<< 1),	
 		FLASH		= (1<< 4),	
@@ -101,9 +102,9 @@ public:
 	// Methods
 	void Draw( Surface* a_Target, int a_X, int a_Y );
 	void DrawScaled( int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target );
-	void SetFlags( unsigned int a_Flags ) { m_Flags = a_Flags; }
+	void SetFlags( SpriteFlags a_Flags ) { m_Flags = a_Flags; }
 	void SetFrame( unsigned int a_Index ) { m_CurrentFrame = a_Index; }
-	unsigned int GetFlags() const { return m_Flags; }
+	SpriteFlags GetFlags() const { return m_Flags; }
 	int GetWidth() { return m_Width; }
 	int GetHeight() { return m_Height; }
 	Pixel* GetBuffer() { return m_Surface->GetBuffer(); }	
@@ -116,7 +117,7 @@ private:
 	int m_Width, m_Height, m_Pitch;
 	unsigned int m_NumFrames;          
 	unsigned int m_CurrentFrame;       
-	unsigned int m_Flags;
+	SpriteFlags m_Flags;
 	unsigned int** m_Start;
 	Surface* m_Surface;
 };

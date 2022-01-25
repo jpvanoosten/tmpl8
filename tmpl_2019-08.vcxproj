@@ -238,6 +238,9 @@
   <ItemGroup>
     <Text Include="_readme.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\nc2tiles.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
