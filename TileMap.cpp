@@ -26,18 +26,39 @@ void TileMap::SetTiles(const std::vector<Tile>& tiles, int width)
 
 void TileMap::DrawTile(Tmpl8::Surface& screen, const Tile& tile, int tileX, int tileY)
 {
+	int dstW = tile.width;
+	int dstH = tile.height;
 	int dstX = offset.x + (tileX * tile.width);
 	int dstY = offset.y + (tileY * tile.height);
+
 	int srcX = tile.x  * ( tile.width + 1 ) + 1;
 	int srcY = tile.y * ( tile.height + 1 ) + 1;
 
+	// Compute the amount to clip.
+	int clipLeft = std::min(0, dstX);
+	int clipTop = std::min(0, dstY);		
+	int clipRight = std::max(0, dstX + dstW - screen.GetWidth());
+	int clipBottom = std::max(0, dstY + dstH - screen.GetHeight());
+
+	// Adjust the source and destination rectangles according to the clipping.
+	dstX -= clipLeft;
+	dstY -= clipTop;
+	dstW -= clipRight;
+	dstH -= clipBottom;
+	srcX -= clipLeft;
+	srcY -= clipTop;
+
+	// Check if the entire tile is clipped.
+	if (dstX + dstW < 0 || dstX >= screen.GetWidth()) return;
+	if (dstY + dstH < 0 || dstY >= screen.GetHeight()) return;
+
+	// Draw the unclipped part of the tile.
 	Pixel* dst = screen.GetBuffer() + dstX + dstY * screen.GetPitch();
 	Pixel* src = tileSurface.GetBuffer() + srcX + srcY * tileSurface.GetPitch();
 
-	for (int y = 0; y < tile.height; ++y)
+	for (int y = 0; y < dstH; ++y)
 	{
-		// TODO: Clipping.
-		memcpy(dst, src, sizeof(Pixel) * tile.width);
+		memcpy(dst, src, sizeof(Pixel) * dstW);
 		dst += screen.GetPitch();
 		src += tileSurface.GetPitch();
 	}

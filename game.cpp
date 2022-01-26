@@ -99,7 +99,8 @@ namespace Tmpl8
         float offsetX = (screenWidth - tileMapSize.x) / 2.0f;
         float offsetY = (screenHeight - tileMapSize.y) / 2.0f;
 
-        tileMap.SetOffset({offsetX + sinf(totalTime) * 10.0f, offsetY + cosf(totalTime) * 10.0f});
+        // Test clipping...
+        tileMap.SetOffset({offsetX + sinf(totalTime) * ScreenWidth / 2, offsetY + cosf(totalTime) * ScreenHeight / 2});
         
         tileMap.Draw(*screen);
     }
