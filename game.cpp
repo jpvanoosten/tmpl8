@@ -7,7 +7,7 @@
 
 namespace Tmpl8
 {
-	float px = 32.0f, py = 32.0f;
+	float px = ScreenWidth / 2, py = ScreenHeight / 2;
 
 	Surface tiles("assets/nc2tiles.png");
 	Sprite tank(new Surface("assets/ctankbase.tga"), 16);
@@ -37,6 +37,21 @@ namespace Tmpl8
 		, tileMap("assets/nc2tiles.png")
 	{
 		tileMap.SetTiles(map, 10);
+		vec2 tileMapSize = tileMap.GetSizeInPixels();
+		tileMap.SetOffset({ (ScreenWidth - tileMapSize.x) / 2.0f, (ScreenHeight - tileMapSize.y) / 2.0f });
+
+		// Player
+		playerTexture = new Surface("assets/ctankbase.tga");
+		Bounds playerBounds = { {0, 0}, {static_cast<float>(playerTexture->GetWidth()),static_cast<float>(playerTexture->GetHeight()) } };
+		playerEntity = new Entity(playerTexture, 16, playerBounds, { ScreenWidth / 2, ScreenHeight / 2 });
+		playerController = new PlayerController(playerEntity);
+	}
+
+	Game::~Game()
+	{
+		delete playerTexture;
+		delete playerController;
+		delete playerEntity;
 	}
 
 	void Game::Init() {
@@ -106,16 +121,27 @@ namespace Tmpl8
 
 		screen->Clear(0);
 
-		int2 tileMapSize = tileMap.GetSizeInPixels();
+		vec2 tileMapSize = tileMap.GetSizeInPixels();
 		int screenWidth = screen->GetWidth();
 		int screenHeight = screen->GetHeight();
 
-		float offsetX = (screenWidth - tileMapSize.x) / 2.0f;
-		float offsetY = (screenHeight - tileMapSize.y) / 2.0f;
+		float tx = 0;
+		float ty = 0;
 
-		// Test clipping...
-		tileMap.SetOffset({ offsetX + sinf(totalTime) * ScreenWidth / 2, offsetY + cosf(totalTime) * ScreenHeight / 2 });
+		if (m_Left) tx -= 50.0f * deltaTime;
+		if (m_Right) tx += 50.0f * deltaTime;
+		if (m_Up) ty -= 50.0f * deltaTime;
+		if (m_Down) ty += 50.0f * deltaTime;
 
+		tileMap.Translate({ -tx, -ty });
 		tileMap.Draw(*screen);
+
+		playerController->Update(deltaTime);
+		playerEntity->Draw(*screen);
+
+		//for (auto& entity : entities)
+		//{
+		//	entity.Draw(*screen);
+		//}
 	}
 };

@@ -359,7 +359,7 @@ Sprite::Sprite( Surface* a_Surface, unsigned int a_NumFrames ) :
 
 Sprite::~Sprite()
 {
-	delete m_Surface;
+//	delete m_Surface;
 	for ( unsigned int i = 0; i < m_NumFrames; i++ ) delete m_Start[i];
 	delete[] m_Start;
 }

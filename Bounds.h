@@ -49,6 +49,11 @@ struct Bounds
 		return max.y - min.y;
 	}
 
+	Bounds At(const Tmpl8::vec2& p) const
+	{
+		return Bounds(min + p, max + p);
+	}
+
 	bool Collides(const Bounds& other) const
 	{
 		return Collides(*this, other);

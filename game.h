@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Entity.h"
+#include "PlayerController.h"
 #include "TileMap.h"
 
 namespace Tmpl8 {
@@ -9,6 +11,8 @@ class Game
 {
 public:
 	Game();
+
+	~Game();
 
 	void SetTarget( Surface* surface ) { screen = surface; }
 	void Init();
@@ -27,6 +31,10 @@ private:
 	float m_Right = 0.0f;
 	float m_Down = 0.0f;
 	TileMap tileMap;
+
+	Entity* playerEntity;
+	PlayerController* playerController;
+	Surface* playerTexture;
 };
 
 }; // namespace Tmpl8

@@ -4,6 +4,7 @@ using namespace Tmpl8;
 
 TileMap::TileMap(const char* file)
 	: tileSurface(file)
+	, width(0)
 {}
 
 const Tile& TileMap::GetTile(int x, int y) const
@@ -24,12 +25,30 @@ void TileMap::SetTiles(const std::vector<Tile>& tiles, int width)
 	this->tiles = tiles;
 }
 
+bool TileMap::Collides(const Tmpl8::vec2& p) const
+{
+	Tmpl8::vec2 localPoint = p - offset;
+
+	return false;
+}
+
+bool TileMap::Collides(const Bounds& bounds) const
+{
+	if (tiles.empty()) return false;
+
+	int tileWidth = tiles[0].width;
+	int tileHeight = tiles[0].height;
+
+	// TODO: Loop through the points of the bb and check for collisions.
+}
+
+
 void TileMap::DrawTile(Tmpl8::Surface& screen, const Tile& tile, int tileX, int tileY)
 {
 	int dstW = tile.width;
 	int dstH = tile.height;
-	int dstX = offset.x + (tileX * tile.width);
-	int dstY = offset.y + (tileY * tile.height);
+	int dstX = static_cast<int>(offset.x + (tileX * tile.width));
+	int dstY = static_cast<int>(offset.y + (tileY * tile.height));
 
 	int srcX = tile.x  * ( tile.width + 1 ) + 1;
 	int srcY = tile.y * ( tile.height + 1 ) + 1;

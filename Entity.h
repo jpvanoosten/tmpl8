@@ -1,8 +1,10 @@
 #pragma once
 
-#include "template.h"
+#include "Bounds.h"
 #include "surface.h"
-#include "EntityController.h"
+#include "template.h"
+
+class EntityController;
 
 /// <summary>
 /// An Entity is an object that can appear in the game (like the player entity or an enemy character).
@@ -15,14 +17,10 @@ public:
 	/// </summary>
 	/// <param name="spriteTexture">The surface that contains the sprite texture for this entity.</param>
 	/// <param name="numFrames">The number of frames in the sprite texture.</param>
-	/// <param name="controller">The EntityController (could be a player, or an enemy controller)</param>
-	Entity(Tmpl8::Surface* spriteTexture, int numFrames, EntityController* controller);
-
-	/// <summary>
-	/// Update the Entity.
-	/// </summary>
-	/// <param name="deltaTime">The elapsed time this frame (in seconds).</param>
-	virtual void Update(float deltaTime);
+	/// <param name="bounds">The bouding box of the entity relative to the entity's position.</param>
+	/// <param name="position">The initial position of the entity.</param>
+	/// <param name="anchor">The normalized anchor position of the sprite.</param>
+	Entity(Tmpl8::Surface* spriteTexture, int numFrames, const Bounds& bounds, const Tmpl8::vec2& position = Tmpl8::vec2(0.0f), const Tmpl8::vec2& anchor = Tmpl8::vec2(0.5f));
 
 	/// <summary>
 	/// Draw this entity to the screen.
@@ -50,7 +48,7 @@ public:
 
 	/// <summary>
 	/// The (normalized) anchor-point of the sprite determines the
-	/// position of the entity relative to the position of the sprite.
+	/// position of the sprite relative to the position of the entity.
 	/// An anchor-point of (0, 0) makes the entity's position the top-left
 	/// corner of the sprite. An anchor-point of (0.5, 0.5) makes the entity's
 	/// position the center of the sprite, and an anchor point of (1, 1) makes
@@ -72,12 +70,21 @@ public:
 	}
 
 	/// <summary>
+	/// Get the bounds of the entity in screen space.
+	/// </summary>
+	/// <returns>The screen space bounds of the entity.</returns>
+	const Bounds& GetBounds() const
+	{
+		return bounds.At(position);
+	}
+
+	/// <summary>
 	/// Set the frame of the animation in the sprite.
 	/// </summary>
-	/// <param name="frame">The </param>
+	/// <param name="frame">The animation frame.</param>
 	void SetFrame(int frame)
 	{
-		this->frame = frame;
+		sprite.SetFrame(frame);
 	}
 
 	/// <summary>
@@ -86,16 +93,14 @@ public:
 	/// <returns>The current frame of the sprite animation.</returns>
 	int GetFrame() const
 	{
-		return frame;
+		return sprite.GetFrame();
 	}
-
 
 protected:
 
 private:
-	EntityController* controller = nullptr;
 	Tmpl8::Sprite sprite;
+	Bounds bounds;
 	Tmpl8::vec2 position;
 	Tmpl8::vec2 anchor;
-	int frame = 0;
 };

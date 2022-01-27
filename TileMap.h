@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Bounds.h"
 #include "surface.h"
 #include <string>
 #include <vector>
@@ -16,22 +17,6 @@ struct Tile
 	int width;
 	// The height of the tile in pixels.
 	int height;
-};
-
-struct int2
-{
-	int x;
-	int y;
-	
-	int2(int x, int y)
-		: x(x)
-		, y(y)
-	{}
-
-	int2(float x, float y)
-		: x(static_cast<int>(x))
-		, y(static_cast<int>(y))
-	{}
 };
 
 class TileMap 
@@ -56,18 +41,37 @@ public:
 	/// <param name="width">The number of tiles in the width of the tilemap.</param>
 	void SetTiles(const std::vector<Tile>& tiles, int width);
 
-	int2 GetSizeInPixels() const
+	/// <summary>
+	/// Check to see if a point collides with a blocking tile.
+	/// </summary>
+	/// <param name="p">The point to check.</param>
+	/// <returns>true if the point collides with a blocking tile, false otherwise.</returns>
+	bool Collides(const Tmpl8::vec2& p) const;
+
+	/// <summary>
+	/// Check to see if the bounding box collides with a blocking tile.
+	/// </summary>
+	/// <param name="bounds">The bounding box to check for collision with.</param>
+	/// <returns></returns>
+	bool Collides(const Bounds& bounds) const;
+
+	Tmpl8::vec2 GetSizeInPixels() const
 	{
 		int height = static_cast<int>(tiles.size()) / width;
-		return { width * tiles[0].width, height * tiles[0].height };
+		return { static_cast<float>(width * tiles[0].width), static_cast<float>(height * tiles[0].height) };
 	}
 
-	void SetOffset(const int2& offset)
+	void SetOffset(const Tmpl8::vec2& offset)
 	{
 		this->offset = offset;
 	}
 
-	const int2& GetOffset() const
+	void Translate(const Tmpl8::vec2& translation)
+	{
+		offset += translation;
+	}
+
+	const Tmpl8::vec2& GetOffset() const
 	{
 		return offset;
 	}
@@ -90,5 +94,5 @@ private:
 	
 	// Number of tiles in the width of the map.
 	int width;
-	int2 offset = { 0, 0 };
+	Tmpl8::vec2 offset{ 0, 0 };
 };
