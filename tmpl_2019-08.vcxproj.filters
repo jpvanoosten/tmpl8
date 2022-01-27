@@ -19,6 +19,9 @@
       <Filter>template code</Filter>
     </ClInclude>
     <ClInclude Include="TileMap.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityController.h" />
+    <ClInclude Include="Bounds.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">

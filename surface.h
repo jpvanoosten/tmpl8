@@ -52,7 +52,7 @@ public:
 	void SetPitch( int a_Pitch ) { m_Pitch = a_Pitch; }
 	// Special operations
 	void InitCharset();
-	void SetChar( int c, char* c1, char* c2, char* c3, char* c4, char* c5 );
+	void SetChar( int c, const char* c1, const char* c2, const char* c3, const char* c4, const char* c5 );
 	void Centre( char* a_String, int y1, Pixel color );
 	void Print( char* a_String, int x1, int y1, Pixel color );
 	void Clear( Pixel a_Color );
