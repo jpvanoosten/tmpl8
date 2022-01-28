@@ -2,6 +2,7 @@
 
 #include "Bounds.h"
 #include "surface.h"
+#include <cassert>
 #include <string>
 #include <vector>
 
@@ -31,7 +32,7 @@ public:
 	/// <param name="height">Number of tiles in the Y axis.</param>
 	TileMap(const char* file);
 
-	const Tile& GetTile(int x, int y) const;
+	const Tile* GetTile(int x, int y) const;
 	void SetTile(int x, int y, const Tile& tile);
 
 	/// <summary>
@@ -76,7 +77,7 @@ public:
 		return offset;
 	}
 	
-	const Tile& operator()(int x, int y) const
+	const Tile* operator()(int x, int y) const
 	{
 		return GetTile(x, y);
 	}

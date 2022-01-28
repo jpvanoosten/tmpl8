@@ -26,9 +26,9 @@ namespace Tmpl8
 
 	std::vector<Tile> map = {
 		WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE,WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE,
-		WATER_TILE, PATH_TILE,  PATH_TILE,  PATH_TILE,  WATER_TILE, WATER_TILE,WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE,
-		WATER_TILE, PATH_TILE,  PATH_TILE,  PATH_TILE,  WATER_TILE, WATER_TILE,WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE,
-		WATER_TILE, PATH_TILE,  PATH_TILE,  PATH_TILE,  WATER_TILE, WATER_TILE,WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE,
+		WATER_TILE, PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE, WATER_TILE,
+		WATER_TILE, PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE, WATER_TILE,
+		WATER_TILE, PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE,  PATH_TILE, WATER_TILE,
 		WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE,WATER_TILE, WATER_TILE, WATER_TILE, WATER_TILE,
 	};
 
@@ -42,9 +42,9 @@ namespace Tmpl8
 
 		// Player
 		playerTexture = new Surface("assets/ctankbase.tga");
-		Bounds playerBounds = { {0, 0}, {static_cast<float>(playerTexture->GetWidth()),static_cast<float>(playerTexture->GetHeight()) } };
+		Bounds playerBounds = { {-17, -15}, {19, 18} };
 		playerEntity = new Entity(playerTexture, 16, playerBounds, { ScreenWidth / 2, ScreenHeight / 2 });
-		playerController = new PlayerController(playerEntity);
+		playerController = new PlayerController(playerEntity, &tileMap);
 	}
 
 	Game::~Game()
@@ -55,17 +55,6 @@ namespace Tmpl8
 	}
 
 	void Game::Init() {
-		Bounds a1{ {0, 0}, {1, 1} };
-		Bounds a2{ {2, 2}, {3, 3} };
-		Bounds a3{ {0.25, 0.25}, {0.75, 0.75} };
-		Bounds a4{ {0, 1}, {1, 2} };
-
-		assert(a1.Collides(a2) == false);
-		assert(a1.Collides(a3) == true);
-		assert(a3.Collides(a1) == true);
-		assert(a3.Collides(a2) == false);
-		assert(a1.Collides(a4) == false);
-		assert(a4.Collides(a1) == false);
 	}
 
 	void Game::KeyDown(int key)
@@ -73,16 +62,16 @@ namespace Tmpl8
 		switch (key)
 		{
 		case SDL_SCANCODE_LEFT:
-			m_Left = 1.0f;
+			playerController->MoveLeft(true);
 			break;
 		case SDL_SCANCODE_RIGHT:
-			m_Right = 1.0f;
+			playerController->MoveRight(true);
 			break;
 		case SDL_SCANCODE_UP:
-			m_Up = 1.0f;
+			playerController->MoveUp(true);
 			break;
 		case SDL_SCANCODE_DOWN:
-			m_Down = 1.0f;
+			playerController->MoveDown(true);
 			break;
 		default:
 			break;
@@ -94,16 +83,16 @@ namespace Tmpl8
 		switch (key)
 		{
 		case SDL_SCANCODE_LEFT:
-			m_Left = 0.0f;
+			playerController->MoveLeft(false);
 			break;
 		case SDL_SCANCODE_RIGHT:
-			m_Right = 0.0f;
+			playerController->MoveRight(false);
 			break;
 		case SDL_SCANCODE_UP:
-			m_Up = 0.0f;
+			playerController->MoveUp(false);
 			break;
 		case SDL_SCANCODE_DOWN:
-			m_Down = 0.0f;
+			playerController->MoveDown(false);
 			break;
 		default:
 			break;
@@ -116,32 +105,15 @@ namespace Tmpl8
 	{
 		deltaTime /= 1000.0f;
 
-		static float totalTime = 0.0f;
-		totalTime += deltaTime;
+		playerController->Update(deltaTime);
 
 		screen->Clear(0);
 
-		vec2 tileMapSize = tileMap.GetSizeInPixels();
-		int screenWidth = screen->GetWidth();
-		int screenHeight = screen->GetHeight();
-
-		float tx = 0;
-		float ty = 0;
-
-		if (m_Left) tx -= 50.0f * deltaTime;
-		if (m_Right) tx += 50.0f * deltaTime;
-		if (m_Up) ty -= 50.0f * deltaTime;
-		if (m_Down) ty += 50.0f * deltaTime;
-
-		tileMap.Translate({ -tx, -ty });
 		tileMap.Draw(*screen);
-
-		playerController->Update(deltaTime);
 		playerEntity->Draw(*screen);
 
-		//for (auto& entity : entities)
-		//{
-		//	entity.Draw(*screen);
-		//}
+		Bounds b = playerEntity->GetBounds();
+		//screen->Box(b.min.x, b.min.y, b.max.x, b.max.y, 0xff0000);
+
 	}
 };

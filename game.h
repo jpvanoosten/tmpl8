@@ -25,11 +25,6 @@ public:
 	void KeyDown(int key);
 private:
 	Surface* screen;
-
-	float m_Up = 0.0f;
-	float m_Left = 0.0f;
-	float m_Right = 0.0f;
-	float m_Down = 0.0f;
 	TileMap tileMap;
 
 	Entity* playerEntity;
