@@ -73,7 +73,7 @@ public:
 	/// Get the bounds of the entity in screen space.
 	/// </summary>
 	/// <returns>The screen space bounds of the entity.</returns>
-	const Bounds& GetBounds() const
+	Bounds GetBounds() const
 	{
 		return bounds.At(position);
 	}
