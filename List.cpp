@@ -38,6 +38,10 @@ void IntList::PopBack()
 		{
 			tail->next = nullptr;
 		}
+		else
+		{
+			head = nullptr;
+		}
 		delete prevTail;
 	}
 }
@@ -47,7 +51,20 @@ Node* IntList::GetHead()
 	return head;
 }
 
+Node* IntList::GetTail()
+{
+	return tail;
+}
+
 bool IntList::IsEmpty() const
 {
 	return head == nullptr && tail == nullptr;
+}
+
+size_t IntList::Count() const
+{
+	Node* n = head;
+	int i = 0;
+	for (; n != nullptr; n = n->next, ++i);
+	return i;
 }

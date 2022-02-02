@@ -48,3 +48,32 @@ TEST(IntList, PopBack)
 
 	ASSERT_TRUE(list.IsEmpty());
 }
+
+TEST(IntList, PopMany)
+{
+	IntList list;
+
+	list.PushBack(0);
+	list.PushBack(1);
+	list.PushBack(2);
+	list.PushBack(3);
+	
+	list.PopBack(); // 3
+	list.PopBack(); // 2
+	list.PopBack(); // 1
+	list.PopBack(); // 0
+
+	ASSERT_TRUE(list.IsEmpty());
+}
+
+TEST(IntList, Count)
+{
+	IntList list;
+
+	list.PushBack(0);
+	list.PushBack(1);
+	list.PushBack(2);
+	list.PushBack(3);
+
+	ASSERT_EQ(list.Count(), 4);
+}
