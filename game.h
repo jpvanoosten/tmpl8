@@ -1,5 +1,7 @@
 #pragma once
 
+#include "template.h"
+
 namespace Tmpl8 {
 
 class Surface;
@@ -17,6 +19,11 @@ public:
 	void KeyDown(int key);
 private:
 	Surface* screen;
+
+	vec2 food;
+	bool isFoodEaten = false;
+	int snakeSize = 8;
+	int foodEaten = 0;
 };
 
 }; // namespace Tmpl8
