@@ -1,40 +1,29 @@
 #include "game.h"
 #include "surface.h"
-#include <cstdio> //printf
+#include "template.h"
 
 namespace Tmpl8
 {
-	// -----------------------------------------------------------
-	// Initialize the application
-	// -----------------------------------------------------------
-	void Game::Init()
-	{
-	}
-	
-	// -----------------------------------------------------------
-	// Close down application
-	// -----------------------------------------------------------
-	void Game::Shutdown()
-	{
-	}
+    void Game::Init() {}
 
-	static Sprite rotatingGun(new Surface("assets/aagun.tga"), 36);
-	static int frame = 0;
+    void Game::Shutdown() {}
 
-	// -----------------------------------------------------------
-	// Main application tick function
-	// -----------------------------------------------------------
-	void Game::Tick(float deltaTime)
-	{
-		// clear the graphics window
-		screen->Clear(0);
-		// print something in the graphics window
-		screen->Print("hello world", 2, 2, 0xffffff);
-		// print something to the text window
-		printf("this goes to the console window.\n");
-		// draw a sprite
-		rotatingGun.SetFrame(frame);
-		rotatingGun.Draw(screen, 100, 100);
-		if (++frame == 36) frame = 0;
-	}
+    Surface* img = new Surface("assets/aagun.tga");
+    float dx = 2.0f;
+    void Game::Tick(float deltaTime)
+    {
+        Pixel* dst = screen->GetBuffer();
+        Pixel* src = img->GetBuffer();
+        int srcWidth = img->GetWidth();
+        int srcHeight = img->GetHeight();
+        for (int x = 0; x < ScreenWidth; x++)
+            for (int y = 0; y < ScreenHeight; y++)
+            {
+                int readxpos = (int)(dx * x) % srcWidth;
+                int readypox = (int)(dx * y) % srcHeight;
+                Pixel sample = src[readxpos + readypox * srcWidth];
+                dst[x + y * ScreenWidth] = sample;
+            }
+        dx *= 0.999f;
+    }
 };
