@@ -45,9 +45,6 @@ namespace Tmpl8
     void Game::Tick(float deltaTime)
     {
         screen->Clear(0);
-        FILE* f = fopen("positions.hada", "wb");
-        fprintf(f, "X-position: %f\nY-position: %f\n", x, y);
-        fclose(f);
         screen->Box(x, y, x + 5, y + 5, 0xffffff);
         if ((vy += 0.02f, y += vy) > ScreenHeight) vy = -vy;
         if ((x += vx < 0) || (x >= ScreenWidth)) vx = -vx;
