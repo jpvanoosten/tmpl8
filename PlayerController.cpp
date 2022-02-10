@@ -12,7 +12,6 @@ PlayerController::PlayerController(Entity* player, TileMap* tileMap)
 
 void PlayerController::Update(float deltaTime)
 {
-	vec2 p = player->GetPosition();
 	vec2 d{ 0 };
 	Bounds playerBounds = player->GetBounds();
 

@@ -24,12 +24,12 @@ public:
 	void KeyUp(int key);
 	void KeyDown(int key);
 private:
-	Surface* screen;
-	TileMap tileMap;
+	Surface* screen = nullptr;
+	TileMap* tileMap = nullptr;
 
-	Entity* playerEntity;
-	PlayerController* playerController;
-	Surface* playerTexture;
+	Surface* playerTexture = nullptr;
+	Entity* playerEntity = nullptr;
+	PlayerController* playerController = nullptr;
 };
 
 }; // namespace Tmpl8

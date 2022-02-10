@@ -6,7 +6,6 @@ using namespace Tmpl8;
 
 TileMap::TileMap(const char* file)
 	: tileSurface(file)
-	, width(0)
 {}
 
 const Tile* TileMap::GetTile(int x, int y) const

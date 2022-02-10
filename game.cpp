@@ -34,24 +34,24 @@ namespace Tmpl8
 
 	Game::Game()
 		: screen(nullptr)
-		, tileMap("assets/nc2tiles.png")
 	{
-		tileMap.SetTiles(map, 10);
-		vec2 tileMapSize = tileMap.GetSizeInPixels();
-		tileMap.SetOffset({ (ScreenWidth - tileMapSize.x) / 2.0f, (ScreenHeight - tileMapSize.y) / 2.0f });
+		tileMap = new TileMap("assets/nc2tiles.png");
+		tileMap->SetTiles(map, 10);
+		vec2 tileMapSize = tileMap->GetSizeInPixels();
+		tileMap->SetOffset({ (ScreenWidth - tileMapSize.x) / 2.0f, (ScreenHeight - tileMapSize.y) / 2.0f });
 
 		// Player
 		playerTexture = new Surface("assets/ctankbase.tga");
-		Bounds playerBounds = { {-17, -15}, {19, 18} };
-		playerEntity = new Entity(playerTexture, 16, playerBounds, { ScreenWidth / 2, ScreenHeight / 2 });
-		playerController = new PlayerController(playerEntity, &tileMap);
+		playerEntity = new Entity(playerTexture, 16, { {-17, -15}, {19, 18} }, { ScreenWidth / 2, ScreenHeight / 2 });
+		playerController = new PlayerController(playerEntity, tileMap);
 	}
 
 	Game::~Game()
 	{
-		delete playerTexture;
 		delete playerController;
 		delete playerEntity;
+		delete playerTexture;
+		delete tileMap;
 	}
 
 	void Game::Init() {
@@ -109,11 +109,10 @@ namespace Tmpl8
 
 		screen->Clear(0);
 
-		tileMap.Draw(*screen);
+		tileMap->Draw(*screen);
 		playerEntity->Draw(*screen);
 
 		Bounds b = playerEntity->GetBounds();
-		//screen->Box(b.min.x, b.min.y, b.max.x, b.max.y, 0xff0000);
-
+		screen->Box(b.min.x, b.min.y, b.max.x, b.max.y, 0xff0000);
 	}
 };

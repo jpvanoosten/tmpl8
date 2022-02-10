@@ -20,16 +20,13 @@ struct Tile
 	int height;
 };
 
-class TileMap 
+class TileMap
 {
 public:
-
 	/// <summary>
 	/// Create a tile map with initial width and height.
 	/// </summary>
 	/// <param name="file">The file path of the tile map.</param>
-	/// <param name="width">Number of tiles in the X axis.</param>
-	/// <param name="height">Number of tiles in the Y axis.</param>
 	TileMap(const char* file);
 
 	const Tile* GetTile(int x, int y) const;
@@ -84,9 +81,6 @@ public:
 
 	void Draw(Tmpl8::Surface& screen);
 
-protected:
-	
-
 private:
 	void DrawTile(Tmpl8::Surface& screen, const Tile& tile, int tileX, int tileY);
 
@@ -94,6 +88,6 @@ private:
 	std::vector<Tile> tiles;
 	
 	// Number of tiles in the width of the map.
-	int width;
+	int width = 0;
 	Tmpl8::vec2 offset{ 0, 0 };
 };
