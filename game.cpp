@@ -5,13 +5,12 @@
 #include <SDL_scancode.h>
 #include <cassert>
 
+#include "Timer.h"
+#include "TransformComponent.h"
+
+
 namespace Tmpl8
 {
-	float px = ScreenWidth / 2, py = ScreenHeight / 2;
-
-	Surface tiles("assets/nc2tiles.png");
-	Sprite tank(new Surface("assets/ctankbase.tga"), 16);
-
 	static const Tile WATER_TILE = { true, 10, 2, 32, 32 };
 	static const Tile PATH_TILE = { false, 5, 1, 32, 32 };
 	static const Tile WATER_BORDER = { true, 11, 2, 32, 32 };
@@ -41,78 +40,88 @@ namespace Tmpl8
 		tileMap->SetOffset({ (ScreenWidth - tileMapSize.x) / 2.0f, (ScreenHeight - tileMapSize.y) / 2.0f });
 
 		// Player
-		playerTexture = new Surface("assets/ctankbase.tga");
-		playerEntity = new Entity(playerTexture, 16, { {-17, -15}, {19, 18} }, { ScreenWidth / 2, ScreenHeight / 2 });
-		playerController = new PlayerController(playerEntity, tileMap);
+		Entity player;
+		player.AddComponent(new TransformComponent());
+
+		entities.push_back(std::move(player));
+
+		//playerTexture = new Surface("assets/ctankbase.tga");
+		//playerEntity = new Entity(playerTexture, 16, { {-17, -15}, {19, 18} }, { ScreenWidth / 2, ScreenHeight / 2 });
+		//playerController = new PlayerController(playerEntity, tileMap);
 	}
 
 	Game::~Game()
 	{
-		delete playerController;
-		delete playerEntity;
-		delete playerTexture;
+		//delete playerController;
+		//delete playerEntity;
+		//delete playerTexture;
 		delete tileMap;
 	}
 
 	void Game::Init() {
 	}
 
-	void Game::KeyDown(int key)
+	void Game::KeyDown(SDL_Scancode key)
 	{
-		switch (key)
+		for (auto& e : entities)
 		{
-		case SDL_SCANCODE_LEFT:
-			playerController->MoveLeft(true);
-			break;
-		case SDL_SCANCODE_RIGHT:
-			playerController->MoveRight(true);
-			break;
-		case SDL_SCANCODE_UP:
-			playerController->MoveUp(true);
-			break;
-		case SDL_SCANCODE_DOWN:
-			playerController->MoveDown(true);
-			break;
-		default:
-			break;
+			e.KeyDown(key);
 		}
 	}
 
-	void Game::KeyUp(int key)
+	void Game::KeyUp(SDL_Scancode key)
 	{
-		switch (key)
+		for (auto& e : entities)
 		{
-		case SDL_SCANCODE_LEFT:
-			playerController->MoveLeft(false);
-			break;
-		case SDL_SCANCODE_RIGHT:
-			playerController->MoveRight(false);
-			break;
-		case SDL_SCANCODE_UP:
-			playerController->MoveUp(false);
-			break;
-		case SDL_SCANCODE_DOWN:
-			playerController->MoveDown(false);
-			break;
-		default:
-			break;
+			e.KeyUp(key);
 		}
 	}
 
 	void Game::Shutdown() {}
 
-	void Game::Tick(float deltaTime)
+	void Game::Tick(float)
 	{
-		deltaTime /= 1000.0f;
-
-		playerController->Update(deltaTime);
+		Timer::Get().Tick();
 
 		screen->Clear(0);
 
-		tileMap->Draw(*screen);
-		playerEntity->Draw(*screen);
+		for (auto& e : entities)
+		{
+			e.Update();
+		}
 
-		Bounds b = playerEntity->GetBounds();
-		screen->Box(b.min.x, b.min.y, b.max.x, b.max.y, 0xff0000);
+		tileMap->Draw(*screen);
+
+		for (auto& e : entities)
+		{
+			e.Render(*screen);
+		}
+
+		//Bounds b = playerEntity->GetBounds();
+		//screen->Box(b.min.x, b.min.y, b.max.x, b.max.y, 0xff0000);
+	}
+
+	void Game::MouseUp(int button)
+	{
+		for (auto& e : entities)
+		{
+			e.MouseUp(button);
+		}
+	}
+
+	void Game::MouseDown(int button)
+	{
+		for (auto& e : entities)
+		{
+			e.MouseDown(button);
+		}
+	}
+
+	void Game::MouseMove(int x, int y)
+	{
+		for (auto& e : entities)
+		{
+			e.MouseMove(x, y);
+		}
 	}
 };

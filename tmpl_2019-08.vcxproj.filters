@@ -10,7 +10,9 @@
     </ClCompile>
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="PlayerController.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="TransformComponent.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -22,9 +24,11 @@
     </ClInclude>
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityController.h" />
     <ClInclude Include="Bounds.h" />
     <ClInclude Include="PlayerController.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="TransformComponent.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
