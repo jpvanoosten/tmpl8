@@ -1,12 +1,6 @@
 #include "Entity.h"
 #include "Component.h"
 
-Entity::Entity(Entity&& copy) noexcept
-	: components(std::move(copy.components))
-{
-	int i = 3;
-}
-
 Entity::~Entity()
 {
 	for (auto c : components)

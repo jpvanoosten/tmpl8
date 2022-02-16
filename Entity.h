@@ -21,8 +21,22 @@ public:
 	/// </summary>
 	Entity() = default;
 
-	Entity(const Entity& copy) = default;
-	Entity(Entity&& copy) noexcept;
+	/// <summary>
+	/// Entities store a list of pointers to components that they take ownership of.
+	/// Making copies would result in multiple entities taking ownership of the same
+	/// component, and would result in the component being deleted for each copy of 
+	/// the entity.
+	/// </summary>
+	/// <remarks>An entity can be moved, but it cannot be copied.</remarks>
+	/// <param name="copy"></param>
+	Entity(const Entity& copy) = delete;
+
+	/// <summary>
+	/// Move contrstructor.
+	/// </summary>
+	/// <param name="copy"></param>
+	/// <returns></returns>
+	Entity(Entity&& copy) noexcept = default;
 	
 	~Entity();
 
