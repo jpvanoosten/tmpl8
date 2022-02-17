@@ -1,13 +1,13 @@
 #include "Bounds.h"
 #include "game.h"
+#include "PlayerComponent.h"
 #include "surface.h"
 #include "template.h"
-#include <SDL_scancode.h>
-#include <cassert>
-
 #include "Timer.h"
 #include "TransformComponent.h"
 
+#include <SDL_scancode.h>
+#include <cassert>
 
 namespace Tmpl8
 {
@@ -41,7 +41,9 @@ namespace Tmpl8
 
 		// Player
 		Entity player;
+		player.AddComponent(new PlayerComponent());
 		player.AddComponent(new TransformComponent());
+		player.AddComponent(new PlayerComponent());
 
 		entities.push_back(std::move(player));
 

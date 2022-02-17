@@ -3,71 +3,71 @@
 
 Entity::~Entity()
 {
-	for (auto c : components)
+	for (auto& iter : components)
 	{
-		delete c;
+		delete iter.second;
 	}
 }
 
 void Entity::AddComponent(Component* component)
 {
-	components.push_back(component);
+	components.insert({ component->GetID(), component });
 }
 
 void Entity::Update()
 {
-	for (auto c : components)
+	for (auto& iter : components)
 	{
-		c->Update();
+		iter.second->Update(*this);
 	}
 }
 
 void Entity::Render(Tmpl8::Surface& screen)
 {
-	for (auto c : components)
+	for (auto& iter : components)
 	{
-		c->Render(screen);
+		iter.second->Render(*this, screen);
 	}
 
 }
 
 void Entity::KeyDown(SDL_Scancode key)
 {
-	for (auto c : components)
+	for (auto& iter : components)
 	{
-		c->KeyDown(key);
+		iter.second->KeyDown(*this, key);
 	}
 
 }
 
 void Entity::KeyUp(SDL_Scancode key)
 {
-	for (auto c : components)
+	for (auto& iter : components)
 	{
-		c->KeyUp(key);
+		iter.second->KeyUp(*this, key);
 	}
 }
 
 void Entity::MouseMove(int x, int y)
 {
-	for (auto c : components)
+	for (auto& iter : components)
 	{
-		c->MouseMove(x, y);
+		iter.second->MouseMove(*this, x, y);
 	}
 }
 
 void Entity::MouseDown(int button)
 {
-	for (auto c : components)
+	for (auto& iter : components)
 	{
-		c->MouseDown(button);
+		iter.second->MouseDown(*this, button);
 	}
 }
 
 void Entity::MouseUp(int button)
 {
-	for (auto c : components)
+	for (auto& iter : components)
 	{
-		c->MouseUp(button);
+		iter.second->MouseUp(*this, button);
 	}
 }

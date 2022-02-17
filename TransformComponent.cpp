@@ -1,14 +1,22 @@
 #include "TransformComponent.h"
-#include "Timer.h"
+
+#include "Entity.h"
+#include "PlayerComponent.h"
 #include "surface.h"
+#include "Timer.h"
+
 #include <string>
 
-void TransformComponent::Update()
+void TransformComponent::Update(Entity& entity)
 {
-	int i = 3;
+	auto playerComponents = entity.GetComponents<PlayerComponent>();
+	for(auto pc : playerComponents)
+	{
+		pc->Update(entity);
+	}
 }
 
-void TransformComponent::Render(Tmpl8::Surface& screen)
+void TransformComponent::Render(Entity& entity, Tmpl8::Surface& screen)
 {
 	const Timer& t = Timer::Get();
 
@@ -26,6 +34,6 @@ void TransformComponent::Render(Tmpl8::Surface& screen)
 	}
 	auto s = std::string("FPS: ") + std::to_string(fps);
 
-	screen.Print(s.c_str(), 10, 10, 0xffffffff);
+	screen.Print(s.c_str(), 10, 10, 0xffffffff, 2);
 }
 

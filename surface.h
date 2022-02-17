@@ -54,7 +54,7 @@ public:
 	void InitCharset();
 	void SetChar( int c, const char* c1, const char* c2, const char* c3, const char* c4, const char* c5 );
 	void Centre( char* a_String, int y1, Pixel color );
-	void Print(const char* a_String, int x1, int y1, Pixel color );
+	void Print(const char* a_String, int x1, int y1, Pixel color, int width = 1 );
 	void Clear( Pixel a_Color );
 	void Line( float x1, float y1, float x2, float y2, Pixel color );
 	void Plot( int x, int y, Pixel c );

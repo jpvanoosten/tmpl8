@@ -1,15 +1,15 @@
 #include "Component.h"
 
-void Component::Update() {}
+void Component::Update(Entity& entity) {}
 
-void Component::Render(Tmpl8::Surface&) {}
+void Component::Render(Entity&, Tmpl8::Surface&) {}
 
-void Component::KeyDown(SDL_Scancode) {}
+void Component::KeyDown(Entity&, SDL_Scancode) {}
 
-void Component::KeyUp(SDL_Scancode) {}
+void Component::KeyUp(Entity&, SDL_Scancode) {}
 
-void Component::MouseMove(int, int) {}
+void Component::MouseMove(Entity&, int, int) {}
 
-void Component::MouseDown(int) {}
+void Component::MouseDown(Entity&, int) {}
 
-void Component::MouseUp(int) {}
+void Component::MouseUp(Entity&, int) {}

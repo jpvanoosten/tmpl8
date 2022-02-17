@@ -13,6 +13,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="PlayerComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -29,6 +30,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="PlayerComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">

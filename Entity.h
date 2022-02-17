@@ -1,7 +1,8 @@
 #pragma once
 
 #include <SDL_scancode.h>
-#include <vector>
+//#include <vector>
+#include <unordered_map>
 
 class Component;
 
@@ -46,6 +47,12 @@ public:
 	/// <param name="component"></param>
 	void AddComponent(Component* component);
 
+	template<typename T>
+	T* GetComponent() const;
+
+	template<typename T>
+	std::vector<T*> GetComponents() const;
+
 	/// <summary>
 	/// Update the entity.
 	/// </summary>
@@ -71,5 +78,34 @@ public:
 protected:
 
 private:
-	std::vector<Component*> components;
+	//std::vector<Component*> components;
+	std::unordered_multimap<std::string, Component*> components;
 };
+
+template<typename T>
+T* Entity::GetComponent() const
+{
+	const std::string& id = T::ID();
+
+	auto iter = components.find(id);
+	if (iter != components.end())
+	{
+		return dynamic_cast<T*>((*iter).second);
+	}
+
+	return nullptr;
+}
+
+template<typename T>
+std::vector<T*> Entity::GetComponents() const
+{
+	const std::string& id = T::ID();
+	auto range = components.equal_range(id);
+	std::vector<T*> res;
+
+	for (auto it = range.first; it != range.second; ++it) {
+		res.push_back(dynamic_cast<T*>(it->second));
+	}
+	
+	return res;
+}
