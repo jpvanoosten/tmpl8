@@ -11,7 +11,7 @@ Entity::~Entity()
 
 void Entity::AddComponent(Component* component)
 {
-	components.insert({ component->GetID(), component });
+	components.insert({ typeid(*component), component });
 }
 
 void Entity::Update()

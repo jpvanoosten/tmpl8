@@ -13,17 +13,6 @@ class Entity;
 class Component
 {
 public:
-	static const std::string& ID()
-	{
-		static std::string id = "Component";
-		return id;
-	}
-
-	virtual const std::string& GetID()
-	{
-		return ID();
-	}
-
 	/// <summary>
 	/// Update the component.
 	/// </summary>

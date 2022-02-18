@@ -3,6 +3,7 @@
 #include <SDL_scancode.h>
 //#include <vector>
 #include <unordered_map>
+#include <typeindex>
 
 class Component;
 
@@ -38,7 +39,7 @@ public:
 	/// <param name="copy"></param>
 	/// <returns></returns>
 	Entity(Entity&& copy) noexcept = default;
-	
+
 	~Entity();
 
 	/// <summary>
@@ -79,15 +80,13 @@ protected:
 
 private:
 	//std::vector<Component*> components;
-	std::unordered_multimap<std::string, Component*> components;
+	std::unordered_multimap<std::type_index, Component*> components;
 };
 
 template<typename T>
 T* Entity::GetComponent() const
 {
-	const std::string& id = T::ID();
-
-	auto iter = components.find(id);
+	auto iter = components.find(typeid(T));
 	if (iter != components.end())
 	{
 		return dynamic_cast<T*>((*iter).second);
@@ -99,8 +98,7 @@ T* Entity::GetComponent() const
 template<typename T>
 std::vector<T*> Entity::GetComponents() const
 {
-	const std::string& id = T::ID();
-	auto range = components.equal_range(id);
+	auto range = components.equal_range(typeid(T));
 	std::vector<T*> res;
 
 	for (auto it = range.first; it != range.second; ++it) {
