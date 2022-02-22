@@ -11,8 +11,15 @@ class Game
 {
 public:
 	Game();
-
 	~Game();
+
+	Game(const Game& copy) = delete;
+	Game& operator=(const Game& copy) = delete;
+
+	Game(Game&& copy) = default;
+	Game& operator=(Game&& copy) = default;
+
+	static Game& Get();
 
 	void SetTarget( Surface* surface ) { screen = surface; }
 	void Init();
@@ -23,6 +30,7 @@ public:
 	void MouseMove(int x, int y);
 	void KeyUp(SDL_Scancode key);
 	void KeyDown(SDL_Scancode key);
+
 private:
 	Surface* screen = nullptr;
 	TileMap* tileMap = nullptr;
@@ -31,6 +39,7 @@ private:
 	//Entity* playerEntity = nullptr;
 	std::vector<Entity> entities;
 
+	static Game* theGame;
 };
 
 }; // namespace Tmpl8

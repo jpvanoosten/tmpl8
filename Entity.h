@@ -46,7 +46,8 @@ public:
 	/// Add a component to this entity.
 	/// </summary>
 	/// <param name="component"></param>
-	void AddComponent(Component* component);
+	template<typename T, typename... Args>
+	void AddComponent(Args&&... args);
 
 	template<typename T>
 	T* GetComponent() const;
@@ -79,9 +80,14 @@ public:
 protected:
 
 private:
-	//std::vector<Component*> components;
 	std::unordered_multimap<std::type_index, Component*> components;
 };
+
+template<typename T, typename... Args>
+void Entity::AddComponent(Args&&... args)
+{
+	components.insert({ typeid(T), new T(std::forward(args)...) });
+}
 
 template<typename T>
 T* Entity::GetComponent() const

@@ -7,10 +7,14 @@
 #include "TransformComponent.h"
 
 #include <SDL_scancode.h>
+#include <cstddef>
 #include <cassert>
+
 
 namespace Tmpl8
 {
+	Game* Game::theGame = nullptr;
+
 	static const Tile WATER_TILE = { true, 10, 2, 32, 32 };
 	static const Tile PATH_TILE = { false, 5, 1, 32, 32 };
 	static const Tile WATER_BORDER = { true, 11, 2, 32, 32 };
@@ -34,6 +38,10 @@ namespace Tmpl8
 	Game::Game()
 		: screen(nullptr)
 	{
+		assert(theGame == nullptr);
+
+		theGame = this;
+
 		tileMap = new TileMap("assets/nc2tiles.png");
 		tileMap->SetTiles(map, 10);
 		vec2 tileMapSize = tileMap->GetSizeInPixels();
@@ -41,9 +49,10 @@ namespace Tmpl8
 
 		// Player
 		Entity player;
-		player.AddComponent(new PlayerComponent());
-		player.AddComponent(new TransformComponent());
-		player.AddComponent(new PlayerComponent());
+
+		player.AddComponent<PlayerComponent>();
+		player.AddComponent<TransformComponent>();
+		player.AddComponent<PlayerComponent>();
 
 		entities.push_back(std::move(player));
 
@@ -57,11 +66,20 @@ namespace Tmpl8
 		//delete playerController;
 		//delete playerEntity;
 		//delete playerTexture;
-		delete tileMap;
+		if(tileMap != nullptr)
+			delete tileMap;
+
+		theGame = nullptr;
 	}
 
-	void Game::Init() {
+	Game& Game::Get()
+	{
+		assert(theGame != nullptr);
+		return *theGame;
 	}
+
+	void Game::Init()
+	{}
 
 	void Game::KeyDown(SDL_Scancode key)
 	{

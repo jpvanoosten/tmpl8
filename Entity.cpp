@@ -1,17 +1,14 @@
 #include "Entity.h"
 #include "Component.h"
 
+#include <utility>
+
 Entity::~Entity()
 {
 	for (auto& iter : components)
 	{
 		delete iter.second;
 	}
-}
-
-void Entity::AddComponent(Component* component)
-{
-	components.insert({ typeid(*component), component });
 }
 
 void Entity::Update()

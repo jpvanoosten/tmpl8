@@ -55,6 +55,11 @@ public:
 	/// <param name="button"></param>
 	virtual void MouseUp(Entity& entity, int button);
 
+	/// <summary>
+	/// Minimal requirment for virtual base classes.
+	/// </summary>
+	virtual ~Component() = default;
+
 protected:
 	/// <summary>
 	/// Do not construct directly!.

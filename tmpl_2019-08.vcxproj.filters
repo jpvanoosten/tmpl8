@@ -14,6 +14,7 @@
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
+    <ClCompile Include="ColliderComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -26,11 +27,11 @@
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Bounds.h" />
-    <ClInclude Include="PlayerController.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="PlayerComponent.h" />
+    <ClInclude Include="ColliderComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
