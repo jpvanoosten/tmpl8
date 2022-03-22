@@ -86,7 +86,7 @@ private:
 template<typename T, typename... Args>
 void Entity::AddComponent(Args&&... args)
 {
-	components.insert({ typeid(T), new T(std::forward(args)...) });
+	components.insert({ typeid(T), new T(std::forward<Args>(args)...) });
 }
 
 template<typename T>

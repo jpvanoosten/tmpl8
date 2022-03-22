@@ -23,6 +23,8 @@ struct Tile
 class TileMap
 {
 public:
+	TileMap();
+
 	/// <summary>
 	/// Create a tile map with initial width and height.
 	/// </summary>
@@ -59,19 +61,19 @@ public:
 		return { static_cast<float>(width * tiles[0].width), static_cast<float>(height * tiles[0].height) };
 	}
 
-	void SetOffset(const Tmpl8::vec2& offset)
+	void SetPosition(const Tmpl8::vec2& position)
 	{
-		this->offset = offset;
+		this->position = position;
 	}
 
 	void Translate(const Tmpl8::vec2& translation)
 	{
-		offset += translation;
+		position += translation;
 	}
 
-	const Tmpl8::vec2& GetOffset() const
+	const Tmpl8::vec2& GetPosition() const
 	{
-		return offset;
+		return position;
 	}
 	
 	const Tile* operator()(int x, int y) const
@@ -79,7 +81,9 @@ public:
 		return GetTile(x, y);
 	}
 
-	void Draw(Tmpl8::Surface& screen);
+	void Draw(Tmpl8::Surface& screen, const Tmpl8::vec2& wp);
+
+	static int NUM_SOMETHING;
 
 private:
 	void DrawTile(Tmpl8::Surface& screen, const Tile& tile, int tileX, int tileY);
@@ -89,5 +93,5 @@ private:
 	
 	// Number of tiles in the width of the map.
 	int width = 0;
-	Tmpl8::vec2 offset{ 0, 0 };
+	Tmpl8::vec2 position{ 0, 0 };
 };

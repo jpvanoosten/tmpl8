@@ -2,11 +2,14 @@
 
 #include <SDL_scancode.h>
 #include "Entity.h"
-#include "TileMap.h"
+#include "template.h"
+
+class TileMap;
 
 namespace Tmpl8 {
 
 class Surface;
+
 class Game
 {
 public:
@@ -40,6 +43,9 @@ private:
 	std::vector<Entity> entities;
 
 	static Game* theGame;
+
+	vec2 worldPos;
+	vec2 cameraPos;
 };
 
 }; // namespace Tmpl8

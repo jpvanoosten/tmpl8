@@ -4,6 +4,8 @@
 
 using namespace Tmpl8;
 
+int TileMap::NUM_SOMETHING = 5;
+
 TileMap::TileMap(const char* file)
 	: tileSurface(file)
 {}
@@ -36,7 +38,7 @@ bool TileMap::Collides(const Tmpl8::vec2& p) const
 	int tileWidth = tiles[0].width;
 	int tileHeight = tiles[0].height;
 
-	Tmpl8::vec2 localPoint = p - offset;
+	Tmpl8::vec2 localPoint = p - position;
 
 	int tileX = static_cast<int>(localPoint.x / tileWidth);
 	int tileY = static_cast<int>(localPoint.y / tileHeight);
@@ -61,10 +63,10 @@ bool TileMap::Collides(const Bounds& bounds) const
 	vec2 max = bounds.max;
 
 	vec2 p = min;
-	while (p.y < max.y + tileWidth)
+	while (p.y < max.y + tileHeight)
 	{
 		p.x = min.x;
-		while (p.x < max.x + tileHeight)
+		while (p.x < max.x + tileWidth)
 		{
 			if (Collides(vec2{std::min(p.x, max.x), std::min(p.y, max.y)})) return true;
 			p.x += tileWidth;
@@ -80,8 +82,8 @@ void TileMap::DrawTile(Tmpl8::Surface& screen, const Tile& tile, int tileX, int 
 {
 	int dstW = tile.width;
 	int dstH = tile.height;
-	int dstX = static_cast<int>(offset.x + (tileX * tile.width));
-	int dstY = static_cast<int>(offset.y + (tileY * tile.height));
+	int dstX = static_cast<int>(position.x + (tileX * tile.width));
+	int dstY = static_cast<int>(position.y + (tileY * tile.height));
 
 	// Check if the entire tile is clipped.
 	if (dstX + dstW < 0 || dstX >= screen.GetWidth()) return;
@@ -117,8 +119,10 @@ void TileMap::DrawTile(Tmpl8::Surface& screen, const Tile& tile, int tileX, int 
 	}
 }
 
-void TileMap::Draw(Tmpl8::Surface& screen)
+void TileMap::Draw(Tmpl8::Surface& screen, const Tmpl8::vec2& wp)
 {
+	auto curPos = position;
+	position += wp;
 	int tileX = 0;
 	int tileY = 0;
 	for (auto& tile : tiles)
@@ -131,4 +135,5 @@ void TileMap::Draw(Tmpl8::Surface& screen)
 			++tileY;
 		}
 	}
+	position = curPos;
 }

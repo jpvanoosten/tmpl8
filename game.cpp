@@ -5,11 +5,13 @@
 #include "template.h"
 #include "Timer.h"
 #include "TransformComponent.h"
+#include "TileMap.h"
 
 #include <SDL_scancode.h>
 #include <cstddef>
 #include <cassert>
 
+#include <iostream>
 
 namespace Tmpl8
 {
@@ -40,12 +42,15 @@ namespace Tmpl8
 	{
 		assert(theGame == nullptr);
 
+		cameraPos = { 0, 0 };
+		worldPos = { ScreenWidth / 2.0f, ScreenHeight / 2.0f };
+
 		theGame = this;
 
 		tileMap = new TileMap("assets/nc2tiles.png");
 		tileMap->SetTiles(map, 10);
 		vec2 tileMapSize = tileMap->GetSizeInPixels();
-		tileMap->SetOffset({ (ScreenWidth - tileMapSize.x) / 2.0f, (ScreenHeight - tileMapSize.y) / 2.0f });
+		tileMap->SetPosition({ -tileMapSize.x / 2.0f, -tileMapSize.y / 2.0f });
 
 		// Player
 		Entity player;
@@ -55,6 +60,11 @@ namespace Tmpl8
 		player.AddComponent<PlayerComponent>();
 
 		entities.push_back(std::move(player));
+
+		TileMap::NUM_SOMETHING = 10;
+
+		auto i = TileMap::NUM_SOMETHING;
+		std::cout << "Something is: " << i << std::endl;
 
 		//playerTexture = new Surface("assets/ctankbase.tga");
 		//playerEntity = new Entity(playerTexture, 16, { {-17, -15}, {19, 18} }, { ScreenWidth / 2, ScreenHeight / 2 });
@@ -83,6 +93,17 @@ namespace Tmpl8
 
 	void Game::KeyDown(SDL_Scancode key)
 	{
+		switch (key)
+		{
+		case SDL_SCANCODE_LEFT:
+			cameraPos.x -= 1;
+			break;
+		case SDL_SCANCODE_RIGHT:
+			cameraPos.x += 1;
+			break;
+		default:
+			break;
+		}
 		for (auto& e : entities)
 		{
 			e.KeyDown(key);
@@ -103,22 +124,19 @@ namespace Tmpl8
 	{
 		Timer::Get().Tick();
 
-		screen->Clear(0);
+		screen->Clear(TransparentBlack);
 
 		for (auto& e : entities)
 		{
 			e.Update();
 		}
 
-		tileMap->Draw(*screen);
+		tileMap->Draw(*screen, worldPos - cameraPos);
 
 		for (auto& e : entities)
 		{
 			e.Render(*screen);
 		}
-
-		//Bounds b = playerEntity->GetBounds();
-		//screen->Box(b.min.x, b.min.y, b.max.x, b.max.y, 0xff0000);
 	}
 
 	void Game::MouseUp(int button)
