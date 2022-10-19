@@ -228,6 +228,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="surface.h" />
     <ClInclude Include="template.h" />

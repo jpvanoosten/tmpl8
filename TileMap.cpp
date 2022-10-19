@@ -1,5 +1,4 @@
 #include "TileMap.h"
-
 #include <algorithm>
 
 using namespace Tmpl8;

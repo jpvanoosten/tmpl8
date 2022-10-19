@@ -16,6 +16,7 @@
     <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="Colour.cpp" />
+    <ClCompile Include="Grid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -34,6 +35,7 @@
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Colour.h" />
+    <ClInclude Include="Grid.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
