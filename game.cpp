@@ -57,7 +57,7 @@ namespace Tmpl8
         float boost = dash ? 3.0f : 1.0f;
 
         vec2 playerPos = m_player.getPosition();
-        playerPos += vec2{ right - left, down - up } *deltaTime * 100.0f * boost;
+        playerPos += vec2{ right - left, down - up } * deltaTime * 100.0f * boost;
 
         // Clamp to window bounds.
         playerPos.x = std::clamp<float>(playerPos.x, 0.0f, static_cast<float>( ScreenWidth - m_player.getWidth() ) );
