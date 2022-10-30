@@ -57,7 +57,7 @@ namespace Tmpl8
         float boost = dash ? 3.0f : 1.0f;
 
         vec2 playerPos = m_player.getPosition();
-        playerPos += vec2{ right - left, down - up } *deltaTime * 100.0f * boost;
+        playerPos += vec2{ right - left, down - up } * deltaTime * 100.0f * boost;
 
         // Clamp to window bounds.
         playerPos.x = std::clamp<float>(playerPos.x, 0.0f, static_cast<float>( ScreenWidth - m_player.getWidth() ) );
@@ -76,7 +76,8 @@ namespace Tmpl8
         m_player.setFrame(frame - 8);
 
         // Make the player semi-transparent if the shift key is pressed.
-        m_player.setAlpha(dash ? 0.5f : 1.0f);
+        //m_player.setAlpha(dash ? 0.5f : 1.0f);
+        m_player.setAlpha(1.0f);
 
         // draw the player.
         m_player.render(*screen);

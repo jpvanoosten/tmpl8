@@ -75,6 +75,7 @@ void TransparentSprite::render(Tmpl8::Surface& screen)
     srcW -= clipRight - clipLeft;
     srcH -= clipBottom - clipTop;
 
+    // If the sprite is completely off screen...
     if (dstX >= dstW || dstY >= dstH || srcW <= 0 || srcH <= 0) return;
 
     Tmpl8::Pixel* src = m_Sprite.GetBuffer() + (srcY * srcPitch) + (srcW * m_Frame) + srcX;
