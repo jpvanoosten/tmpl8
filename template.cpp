@@ -388,7 +388,7 @@ int main( int argc, char **argv )
 				game->KeyUp( event.key.keysym.scancode );
 				break;
 			case SDL_MOUSEMOTION:
-				game->MouseMove( event.motion.xrel, event.motion.yrel );
+				game->MouseMove( event.motion );
 				break;
 			case SDL_MOUSEBUTTONUP:
 				game->MouseUp( event.button.button );
