@@ -210,7 +210,6 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <AdditionalLibraryDirectories>lib\SDL2-2.0.3\lib\x64;lib\freeimage\lib64</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
