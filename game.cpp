@@ -2,6 +2,8 @@
 #include "surface.h"
 #include <cstdio> //printf
 
+#include "template.h"
+
 namespace Tmpl8
 {
 	// -----------------------------------------------------------
@@ -19,22 +21,32 @@ namespace Tmpl8
 	}
 
 	static Sprite rotatingGun(new Surface("assets/aagun.tga"), 36);
+	static Sprite theSprite(new Surface("assets/ball.png"), 1);
 	static int frame = 0;
-
+	int spriteX = 0;
+	int spriteY = 100;
+	int speed = 1;
 	// -----------------------------------------------------------
 	// Main application tick function
 	// -----------------------------------------------------------
 	void Game::Tick(float deltaTime)
 	{
-		// clear the graphics window
-		screen->Clear(0);
-		// print something in the graphics window
-		screen->Print("hello world", 2, 2, 0xffffff);
-		// print something to the text window
-		printf("this goes to the console window.\n");
-		// draw a sprite
-		rotatingGun.SetFrame(frame);
-		rotatingGun.Draw(screen, 100, 100);
-		if (++frame == 36) frame = 0;
+		spriteY += speed;
+		speed += 1;
+
+		const bool hitBottom = spriteY > ScreenHeight - theSprite.GetHeight();
+		printf("hitBottom: %i\n", hitBottom);
+
+		if (hitBottom)
+		{
+			spriteY = ScreenHeight - theSprite.GetHeight();
+			speed = -(speed - 2);
+			screen->Clear(0xff0000);
+		}
+		else
+		{
+			screen->Clear(0);
+		}
+		theSprite.Draw(screen, spriteX, spriteY);
 	}
 };
