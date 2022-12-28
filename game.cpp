@@ -50,10 +50,6 @@ namespace Tmpl8
 		// Now convert to pixel.
 		return static_cast<Pixel>(r * 255.0) << 16 | static_cast<Pixel>(g * 255.0) << 8 | static_cast<Pixel>(b * 255.0);
 	}
-	void ChangeColor(const Pixel* p)
-	{
-		*p = 0;
-	}
 
 	// -----------------------------------------------------------
 	// Main application tick function
@@ -66,33 +62,15 @@ namespace Tmpl8
 		constexpr double minWavelength = 400.0;
 		constexpr double maxWaveLength = 700.0;
 
-		//const double step = (maxWaveLength - minWavelength) / ScreenWidth;
-		//int x = 0;
-		//float l = minWavelength;
-		//while (l <= maxWaveLength && x < ScreenWidth)
-		//{
-		//	Pixel c = spectral_color(l);
-		//	screen->Line(x, 0, x, ScreenHeight - 1, c);
-		//	l += step;
-		//	x += 1;
-		//}
-        //          0xAARRGGBB
-		Pixel red = 0xffff0000;
-		Pixel green = 0xff00ff00;
-		Pixel blue = 0xff0000ff;
-
-		ChangeColor(&red);
-
-		Color colorRed = red;
-		Color colorBlue = blue;
-
-		float alpha = 0.5f;
-
-		Color colorPurple = colorRed.a * colorRed + (1.0f - colorRed.a) * colorBlue;
-
-		Pixel purple = colorPurple; // ??
-
-		assert(purple == 0xffff00ff);
-		assert(red + green == 0xffffff00);
+		const double step = (maxWaveLength - minWavelength) / ScreenWidth;
+		int x = 0;
+		float l = minWavelength;
+		while (l <= maxWaveLength && x < ScreenWidth)
+		{
+			Pixel c = spectral_color(l);
+			screen->Line(x, 0, x, ScreenHeight - 1, c);
+			l += step;
+			x += 1;
+		}
 	}
 };
