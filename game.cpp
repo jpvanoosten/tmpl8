@@ -28,7 +28,12 @@ namespace Tmpl8
             if (++direction > 15) direction = 0;
         }
 
-        void Move()
+        virtual void Think(const Tank& target)
+        {
+            int i = 3;
+        }
+
+        virtual void Move()
         {
             float angle = ((2 * PI) / 16) * direction;
             x += (sinf(angle) * speed);
@@ -57,7 +62,39 @@ namespace Tmpl8
             : Tank(ix, iy, 0.5f, idirection) //Make sure the AI Tank is slower than the player 
         {}
 
-        void Think(Tank* target) {}
+        void Think(const Tank& target) override
+        {
+            if (turn_delay-- <= 0)
+            {
+                //Current direction of the AITank
+                int toright = direction + 4;
+                if (toright > 15) toright = 0;
+                float angle = ((2 * PI) / 16) * (float)toright;
+                float ax = sinf(angle);
+                float ay = -cosf(angle);
+                //The direction of the target tank relative to this tank
+                float bx = (target.x - x);
+                float by = (target.y - y);
+                float dot_result = ax * bx + ay * by;
+                if (dot_result > 0.0f)
+                    this->TurnRight();
+                else
+                    this->TurnLeft();
+                turn_delay = rand() % 40;
+            }
+        }
+
+        void Move() override
+        {
+            float angle = ((2 * PI) / 16) * direction;
+            x += (sinf(angle) * speed);
+            y += (-cosf(angle) * speed);
+            if (x > 500) x = 500;
+            if (x < 100) x = 100;
+            if (y > 150) y = 150;
+            if (y < 450) y = 450;
+        }
+
         int turn_delay = rand() % 40;
     };
 
@@ -112,7 +149,7 @@ namespace Tmpl8
             if (GetAsyncKeyState(VK_LEFT)) { mytank.TurnLeft(); }
             if (GetAsyncKeyState(VK_RIGHT)) { mytank.TurnRight(); }
             mytank.Move();
-            aitank.Think(&mytank);
+            aitank.Think(mytank);
             aitank.Move();
             mytank.Draw(screen);
             aitank.Draw(screen);
