@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Ball.h"
+
 namespace Tmpl8 {
 
 class Surface;
@@ -17,6 +19,8 @@ public:
 	void KeyDown( int key ) { /* implement if you want to handle keys */ }
 private:
 	Surface* screen;
+
+	Ball ball;
 };
 
 }; // namespace Tmpl8
