@@ -44,6 +44,7 @@ public:
 	Surface( char* a_File );
 	~Surface();
 	// member data access
+	Pixel GetPixel(int x, int y) const;
 	Pixel* GetBuffer() { return m_Buffer; }
 	void SetBuffer( Pixel* a_Buffer ) { m_Buffer = a_Buffer; }
 	int GetWidth() { return m_Width; }
