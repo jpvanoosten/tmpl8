@@ -45,6 +45,7 @@ public:
 	~Surface();
 	// member data access
 	Pixel* GetBuffer() { return m_Buffer; }
+	Pixel GetPixel(int x, int y);
 	void SetBuffer( Pixel* a_Buffer ) { m_Buffer = a_Buffer; }
 	int GetWidth() { return m_Width; }
 	int GetHeight() { return m_Height; }
