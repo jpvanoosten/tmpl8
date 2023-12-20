@@ -53,5 +53,7 @@ namespace Tmpl8
 
 		// Draw dot.
 		screen->Bar(x - dotSize, y - dotSize, x + dotSize, y + dotSize, 0x00ff00);
+
+		Sleep(16);
 	}
 };
