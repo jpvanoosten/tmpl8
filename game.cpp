@@ -107,17 +107,17 @@ namespace Tmpl8
         // clear the graphics window
         screen->Clear(0);
 
-        const int width = std::min(screen->GetWidth(), jadeFlower.GetWidth());
-        const int height = std::min(screen->GetHeight(), jadeFlower.GetHeight());
-
-        for (int y = 0; y < height; ++y)
+        for (int y = 0; y < 201; ++y)
         {
-            for (int x = 0; x < width; ++x)
+            for (int x = 0; x < 201; ++x)
             {
-                Pixel c = jadeFlower.GetPixel(x, y);
-                c = Fade(c);
+                int i = y * screen->GetWidth() + x;
+
+                Pixel c = i % 2 == 0 ? 0xffffff : 0;
                 screen->Plot(x, y, c);
             }
         }
+
+        screen->Bar(200, 0, 400, 200, 0x7f7f7f);
     }
 };
