@@ -21,9 +21,6 @@ public:
 private:
 	Surface* screen;
 	int mousex, mousey;
-	static const int NUM_DOTS = 1000;
-
-	vec2 dots[NUM_DOTS];
 };
 
 }; // namespace Tmpl8
