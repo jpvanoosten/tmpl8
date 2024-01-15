@@ -4,6 +4,7 @@
 
 #include "surface.h"
 #include <cstdio> //printf
+#include <cmath>
 
 #include "template.h"
 
@@ -95,6 +96,48 @@ namespace Tmpl8
         return static_cast<Pixel>(r << 16 | g << 8 | b);
     }
 
+    // Source: https://en.wikipedia.org/wiki/HSL_and_HSV#HSV_to_RGB
+    Pixel HSVtoRGB( float H, float S = 1.0f, float V = 1.0f )
+    {
+        float C = V * S;
+        float m = V - C;
+        float H2 = H / 60.0f;
+        float X = C * (1.0f - fabsf(fmodf(H2, 2.0f) - 1.0f));
+
+        vec3 RGB;
+
+        switch (static_cast<int>(H2))
+        {
+        case 0:
+            RGB = { C, X, 0 };
+            break;
+        case 1:
+            RGB = { X, C, 0 };
+            break;
+        case 2:
+            RGB = { 0, C, X };
+            break;
+        case 3:
+            RGB = { 0, X, C };
+            break;
+        case 4:
+            RGB = { X, 0, C };
+            break;
+        case 5:
+            RGB = { C, 0, X };
+            break;
+        }
+
+        RGB += vec3{ m, m, m };
+
+        const Pixel p =
+            static_cast<unsigned int>(RGB.x * 255.0f) << 16 |
+            static_cast<unsigned int>(RGB.y * 255.0f) << 8 |
+            static_cast<unsigned int>(RGB.z * 255.0f);
+
+        return p;
+    }
+
     // -----------------------------------------------------------
     // Main application tick function
     // -----------------------------------------------------------
@@ -107,17 +150,25 @@ namespace Tmpl8
         // clear the graphics window
         screen->Clear(0);
 
-        for (int y = 0; y < 201; ++y)
-        {
-            for (int x = 0; x < 201; ++x)
-            {
-                int i = y * screen->GetWidth() + x;
+        //for (int y = 0; y < 200; ++y)
+        //{
+        //    for (int x = 0; x < 200; ++x)
+        //    {
+        //        int i = y * screen->GetWidth() + x;
 
-                Pixel c = i % 2 == 0 ? 0xffffff : 0;
-                screen->Plot(x, y, c);
-            }
+        //        screen->Plot(x, y, (x + y & 1) == 1 ? 0x0 : 0xffffff);
+        //    }
+        //}
+
+        //screen->Bar(200, 0, 400, 200, 0x7f7f7f);
+
+        for(int i = 0; i < screen->GetWidth() - 1; ++i)
+        {
+            float H = (static_cast<float>(i) / static_cast<float>(screen->GetWidth())) * 360.0f;
+            Pixel p = HSVtoRGB(H);
+
+            screen->Line(i, 0, i, screen->GetHeight() - 1, p);
         }
 
-        screen->Bar(200, 0, 400, 200, 0x7f7f7f);
     }
 };
