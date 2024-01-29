@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Ball.hpp"
+
 namespace Tmpl8 {
 
 class Surface;
