@@ -232,7 +232,11 @@
     <ClInclude Include="template.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="settings.txt" />
     <Text Include="_readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bindat.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
