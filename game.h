@@ -1,6 +1,9 @@
 #pragma once
 
 #include "AABB.hpp"
+#include "Player.hpp"
+
+#include <vector>
 
 namespace Tmpl8 {
 
@@ -21,11 +24,16 @@ public:
 	}
 	void KeyUp( int key ) { /* implement if you want to handle keys */ }
 	void KeyDown( int key ) { /* implement if you want to handle keys */ }
+
 private:
+	void checkCollisions();
+
 	Surface* screen;
 
 	Tmpl8::vec2 mousePos;
-	AABB aabb1;
+
+	std::vector<AABB> colliders; // All the platforms in the level.
+	Player player;
 };
 
 }; // namespace Tmpl8
