@@ -49,17 +49,17 @@ namespace Tmpl8
 
         // Draw a cross-hair for the mouse.
         {
-            screen->Line(mousePos.x, 0.0f, mousePos.x, ScreenHeight - 1, RED);
-            screen->Line(0.0f, mousePos.y, ScreenWidth - 1, mousePos.y, RED);
+            screen->Line(currentMousePos.x, 0.0f, currentMousePos.x, ScreenHeight - 1, RED);
+            screen->Line(0.0f, currentMousePos.y, ScreenWidth - 1, currentMousePos.y, RED);
         }
 
         for (auto& collider : colliders)
         {
-            collider.draw(*screen, RED);
+            screen->Bar(collider, RED);
         }
 
         player.draw(screen);
-//        player.getAABB().draw(*screen, BLUE);
+        // screen->Bar(player.getAABB(), BLUE);
 
         std::string text = std::format("Player velocity: {}, {}", player.getVelocity().x, player.getVelocity().y);
         screen->Print(text.c_str(), 10, 10, 0xffffff);
@@ -75,58 +75,82 @@ namespace Tmpl8
         {
             if (!aabb.intersect(collider)) continue; // Optimize collisions.
 
-            // If abs(x) > abs(y) // Then check x collisions first.
-
-            if (vel.y > 0) // Moving down...
+            if (fabs(vel.x) > fabs(vel.y))
             {
-                if (aabb.intersect(collider.topEdge()))
-                {
-                    // Compute intersection.
-                    const float overlap = collider.min.y - aabb.max.y;
-                    aabb += vec2{ 0, overlap };
-
-                    vel.y = 0.0f;
-
-                    player.hitGround(); // This should be a state...
-                }
+                checkHorizontalCollisions(collider, aabb, vel);
+                checkVerticalCollisions(collider, aabb, vel);
             }
-            else if (vel.y < 0) // Moving up
+            else
             {
-                if (aabb.intersect(collider.bottomEdge()))
-                {
-                    // Compute intersection.
-                    const float overlap = collider.max.y - aabb.min.y;
-                    aabb += vec2{ 0, overlap };
-
-                    vel.y = 0.0f;
-                }
+                checkVerticalCollisions(collider, aabb, vel);
+                checkHorizontalCollisions(collider, aabb, vel);
             }
 
-            if (vel.x > 0) // Moving Right...
-            {
-                if (aabb.intersect(collider.leftEdge()))
-                {
-                    // Compute intersection.
-                    const float overlap = collider.min.x - aabb.max.x;
-                    aabb += vec2{ overlap, 0 };
-
-                    vel.x = 0.0f;
-                }
-            }
-            else if (vel.x < 0) // Moving left...
-            {
-                if (aabb.intersect(collider.rightEdge()))
-                {
-                    // Compute intersection.
-                    const float overlap = collider.max.x - aabb.min.x;
-                    aabb += vec2{ overlap, 0 };
-
-                    vel.x = 0.0f;
-                }
-            }
         }
 
         player.setAABB(aabb);
         player.setVelocity(vel);
+    }
+
+    bool Game::checkVerticalCollisions(const AABB& collider, AABB& aabb, Tmpl8::vec2& vel)
+    {
+        if (vel.y > 0) // Moving down...
+        {
+            if (aabb.intersect(collider.topEdge().shrink(3)))
+            {
+                // Compute intersection.
+                const float overlap = collider.min.y - aabb.max.y;
+                aabb += vec2{ 0, overlap };
+
+                vel.y = 0.0f;
+
+                player.hitGround(); // This should be a state...
+                return true;
+            }
+        }
+        else if (vel.y < 0) // Moving up
+        {
+            if (aabb.intersect(collider.bottomEdge().shrink(3)))
+            {
+                // Compute intersection.
+                const float overlap = collider.max.y - aabb.min.y;
+                aabb += vec2{ 0, overlap };
+
+                vel.y = 0.0f;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    bool Game::checkHorizontalCollisions(const AABB& collider, AABB& aabb, Tmpl8::vec2& vel)
+    {
+        if (vel.x > 0) // Moving Right...
+        {
+            if (aabb.intersect(collider.leftEdge().shrink(3)))
+            {
+                // Compute intersection.
+                const float overlap = collider.min.x - aabb.max.x;
+                aabb += vec2{ overlap, 0 };
+
+                vel.x = 0.0f;
+                return true;
+            }
+        }
+        else if (vel.x < 0) // Moving left...
+        {
+            if (aabb.intersect(collider.rightEdge().shrink(3)))
+            {
+                // Compute intersection.
+                const float overlap = collider.max.x - aabb.min.x;
+                aabb += vec2{ overlap, 0 };
+
+                vel.x = 0.0f;
+                return true;
+            }
+        }
+
+        return false;
     }
 };

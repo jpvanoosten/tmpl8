@@ -3,6 +3,9 @@
 
 #pragma once
 
+#include "AABB.hpp"
+#include "Line.hpp"
+
 namespace Tmpl8 {
 
 constexpr int RedMask = 0xff0000;
@@ -57,13 +60,19 @@ public:
 	void Print( const char* a_String, int x1, int y1, Pixel color );
 	void Clear( Pixel a_Color );
 	void Line( float x1, float y1, float x2, float y2, Pixel color );
+	void Line(const ::Line& line, Pixel color)
+	{
+		Line(line.p0.x, line.p0.y, line.p1.x, line.p1.y, color);
+	}
 	void Plot( int x, int y, Pixel c );
 	void LoadImage(const char* a_File );
 	void CopyTo( Surface* a_Dst, int a_X, int a_Y );
 	void BlendCopyTo( Surface* a_Dst, int a_X, int a_Y );
 	void ScaleColor( unsigned int a_Scale );
 	void Box( int x1, int y1, int x2, int y2, Pixel color );
+	void Box(const AABB& aabb, Pixel color);
 	void Bar( int x1, int y1, int x2, int y2, Pixel color );
+	void Bar(const AABB& aabb, Pixel color);
 	void Resize( Surface* a_Orig );
 private:
 	// Attributes

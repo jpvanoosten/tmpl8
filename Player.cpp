@@ -17,8 +17,8 @@ Player::Player(std::string_view _sprite, int numFrames, const vec2& pos)
 void Player::update(float deltaTime)
 {
     constexpr float horizontalForce = 10000.0f;
-    constexpr float jumpImpulse = 800.0f;
-    constexpr float gravity = 900.0f; // TODO: Tweak till it feels good.
+    constexpr float jumpImpulse = 600.0f;
+    constexpr float gravity = 1000.0f; // TODO: Tweak till it feels good.
     constexpr float maxSpeed = 200.0f;
     constexpr float drag = 0.999f; // Based on 60FPS.
 
@@ -48,6 +48,9 @@ void Player::update(float deltaTime)
 
     // Apply drag.
     velocity.x *= powf(1.0f - drag, deltaTime); // not frame-rate independent.
+
+    if (fabsf(velocity.x) < 0.01f)
+        velocity.x = 0.0f;
 }
 
 void Player::draw(Tmpl8::Surface* screen)

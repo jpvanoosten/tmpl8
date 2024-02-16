@@ -5,14 +5,7 @@
 #include <algorithm> // std::min & std::max
 #include <limits>    // std::numeric_limits<float>
 
-#include "surface.h"
-
 #include "Line.hpp"
-
-namespace Tmpl8
-{
-    class Surface;
-}
 
 struct AABB
 {
@@ -217,9 +210,6 @@ struct AABB
     {
         return intersect(l.p0, l.p1);
     }
-
-    // Draw the AABB to the screen.
-    void draw(Tmpl8::Surface& screen, Tmpl8::Pixel color) const;
 
     AABB() noexcept = default;
     AABB(const AABB&) noexcept = default;

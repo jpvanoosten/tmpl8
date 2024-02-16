@@ -224,7 +224,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AABB.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="surface.cpp" />

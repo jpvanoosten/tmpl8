@@ -197,6 +197,14 @@ namespace Tmpl8 {
         Line((float)x1, (float)y1, (float)x1, (float)y2, c);
     }
 
+    void Surface::Box(const AABB& aabb, Pixel color)
+    {
+        Line(aabb.topEdge(), color);
+        Line(aabb.bottomEdge(), color);
+        Line(aabb.leftEdge(), color);
+        Line(aabb.rightEdge(), color);
+    }
+
     int clamp(int x, int min, int max)
     {
         return x < min ? min : x > max ? max : x;
@@ -215,6 +223,11 @@ namespace Tmpl8 {
             for (int x = 0; x <= (x2 - x1); x++) a[x] = c;
             a += m_Pitch;
         }
+    }
+
+    void Surface::Bar(const AABB& aabb, Pixel color)
+    {
+        Bar(static_cast<int>(aabb.min.x), static_cast<int>(aabb.min.y), static_cast<int>(aabb.max.x), static_cast<int>(aabb.max.y), color);
     }
 
     void Surface::CopyTo(Surface* a_Dst, int a_X, int a_Y)

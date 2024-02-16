@@ -93,9 +93,9 @@ public:
 	void operator *= ( const vec2& a ) { x *= a.x; y *= a.y; }
 	void operator *= ( float a ) { x *= a; y *= a; }
 	float& operator [] ( const int idx ) { return cell[idx]; }
-	float length() { return sqrtf( x * x + y * y ); }
-	float sqrLentgh() { return x * x + y * y; }
-	vec2 normalized() { float r = 1.0f / length(); return vec2( x * r, y * r ); }
+	float length() const { return sqrtf( x * x + y * y ); }
+	float sqrLength() const { return x * x + y * y; }
+	vec2 normalized() const { float r = 1.0f / length(); return vec2( x * r, y * r ); }
 	void normalize() { float r = 1.0f / length(); x *= r; y *= r; }
 	static vec2 normalize( vec2 v ) { return v.normalized(); }
 	float dot( const vec2& operand ) const { return x * operand.x + y * operand.y; }
@@ -119,7 +119,7 @@ public:
 	float operator [] ( const uint& idx ) const { return cell[idx]; }
 	float& operator [] ( const uint& idx ) { return cell[idx]; }
 	float length() const { return sqrtf( x * x + y * y + z * z ); }
-	float sqrLentgh() const { return x * x + y * y + z * z; }
+	float sqrLength() const { return x * x + y * y + z * z; }
 	vec3 normalized() const { float r = 1.0f / length(); return vec3( x * r, y * r, z * r ); }
 	void normalize() { float r = 1.0f / length(); x *= r; y *= r; z *= r; }
 	static vec3 normalize( const vec3 v ) { return v.normalized(); }
