@@ -234,6 +234,8 @@
     <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABB.hpp" />
+    <ClInclude Include="Circle.hpp" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Rect.hpp" />
     <ClInclude Include="Sprite2D.hpp" />
