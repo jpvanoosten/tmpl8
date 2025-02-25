@@ -11,39 +11,6 @@ namespace Tmpl8
 {
     void Game::Init()
     {
-        // Test Circle-Circle collision.
-        {
-            Circle a{ {0, 0}, 5 };
-            Circle b{ {10, 0}, 5 };
-            assert(!a.intersect(b));
-        }
-        {
-            Circle a{ {0, 0}, 5 };
-            Circle b{ {9.9f, 0}, 5 };
-            assert(a.intersect(b));
-        }
-        {
-            AABB a{ {0, 0}, {10, 10} };
-            AABB b{ {10, 10}, {20, 20} };
-            assert(a.intersect(b));
-        }
-        {
-            AABB a{ {0, 0}, {10, 10} };
-            AABB b{ {11, 11}, {20, 20} };
-            assert(!a.intersect(b));
-        }
-        {
-            Circle a{ {0, 0}, 10 };
-            AABB aabb{ {-5, -5}, {5, 5} };
-            assert(aabb.intersect(a));
-        }
-        {
-            Circle a{ {0, 0}, 10 };
-            AABB aabb{ {10, 0}, {20, 10} };
-            assert(aabb.intersect(a));
-        }
-
-
         std::shared_ptr<SpriteSheet> playerShip = std::make_shared<SpriteSheet>("assets/playership.png", 1, 9);
         tileMap = TileMap{ playerShip, 5, 5 };
 
@@ -62,6 +29,16 @@ namespace Tmpl8
                 tileMap(x, y) = tileIds[y * 5 + x];
             }
         }
+
+        AABB playerAABB{ {-20, -80}, {20, 0} };
+        player = Player{ playerAABB, {ScreenWidth / 2, ScreenHeight / 2} };
+
+        // Setup colliders
+        colliders = {
+            AABB::fromXYWH(300, 475, 197, 36),
+            AABB::fromXYWH(534, 383, 102, 36),
+            AABB::fromXYWH(656, 311, 112, 36)
+        };
     }
 
     void Game::Shutdown() {}
@@ -70,7 +47,11 @@ namespace Tmpl8
     void Game::Tick(float deltaTime)
     {
         screen->Clear(0);
+        player.draw(*screen);
 
-        tileMap.draw(*screen, 100, 100);
+        for (auto& collider : colliders)
+        {
+            screen->Box(collider, 0xFF0000);
+        }
     }
 };

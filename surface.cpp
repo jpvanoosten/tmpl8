@@ -248,6 +248,11 @@ namespace Tmpl8 {
         );
     }
 
+    void Surface::Box(const AABB& aabb, Pixel color)
+    {
+        Box(aabb.min.x, aabb.min.y, aabb.max.x, aabb.max.y, color);
+    }
+
     void Surface::Bar(int x1, int y1, int x2, int y2, Pixel c)
     {
         x1 = x1 < 0 ? 0 : x1 >= m_Width ? m_Width - 1 : x1;

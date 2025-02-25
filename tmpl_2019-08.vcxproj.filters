@@ -11,6 +11,7 @@
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="Sprite2D.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -24,6 +25,9 @@
     <ClInclude Include="SpriteSheet.hpp" />
     <ClInclude Include="Sprite2D.hpp" />
     <ClInclude Include="Rect.hpp" />
+    <ClInclude Include="AABB.hpp" />
+    <ClInclude Include="Circle.hpp" />
+    <ClInclude Include="Player.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">

@@ -227,6 +227,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Sprite2D.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="surface.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="AABB.hpp" />
     <ClInclude Include="Circle.hpp" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="Player.hpp" />
     <ClInclude Include="Rect.hpp" />
     <ClInclude Include="Sprite2D.hpp" />
     <ClInclude Include="SpriteSheet.hpp" />

@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "AABB.hpp"
+
 namespace Tmpl8 {
 
 constexpr int RedMask = 0xff0000;
@@ -65,6 +67,7 @@ public:
 	void ScaleColor( unsigned int a_Scale );
 	void Box( int x1, int y1, int x2, int y2, Pixel color );
 	void Box(float x1, float y1, float x2, float y2, Pixel color);
+	void Box(const AABB& aabb, Pixel color);
 	void Bar( int x1, int y1, int x2, int y2, Pixel color );
 	void Resize( Surface* a_Orig );
 private:

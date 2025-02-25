@@ -2,6 +2,7 @@
 
 #include "TileMap.h"
 #include "template.h"
+#include "Player.hpp"
 
 namespace Tmpl8 {
 
@@ -21,6 +22,8 @@ namespace Tmpl8 {
 	private:
 		Surface* screen;
 		TileMap tileMap;
+		Player player;
+		std::vector<AABB> colliders;
 	};
 
 }; // namespace Tmpl8
