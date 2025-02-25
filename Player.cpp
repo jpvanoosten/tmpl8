@@ -15,3 +15,19 @@ void Player::update(float deltaTime)
     p += v * deltaTime;
 }
 
+void Player::keyUp(int key)
+{
+    switch (key)
+    {
+        
+    }
+}
+
+void Player::keyDown(int key)
+{
+    switch (key)
+    {
+        
+    }
+}
+

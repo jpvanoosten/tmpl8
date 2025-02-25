@@ -43,7 +43,6 @@ namespace Tmpl8
 
     void Game::Shutdown() {}
 
-
     void Game::Tick(float deltaTime)
     {
         screen->Clear(0);

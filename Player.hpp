@@ -22,6 +22,18 @@ public:
     /// <param name="deltaTime">The elapsed time (in seconds).</param>
     void update(float deltaTime);
 
+    /// <summary>
+    /// A key was released on the keyboard.
+    /// </summary>
+    /// <param name="key">The key that was released.</param>
+    void keyUp(int key);
+
+    /// <summary>
+    /// A key was pressed on the keyboard.
+    /// </summary>
+    /// <param name="key">The key that was pressed.</param>
+    void keyDown(int key);
+
     AABB getAABB() const
     {
         return aabb.at(p);
