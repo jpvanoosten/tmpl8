@@ -62,5 +62,8 @@ public:
 private:
     Tmpl8::vec2 p{0}; // Current position of the player.
     Tmpl8::vec2 v{0}; // Velocity of the player.
+    static const float playerSpeed; // Player speed in pixels/second
     AABB aabb;
+    float w = 0.0f, a = 0.0f, s = 0.0f, d = 0.0f;
+    bool space = false;
 };

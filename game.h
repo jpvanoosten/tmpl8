@@ -19,6 +19,7 @@ namespace Tmpl8 {
         void MouseMove(int x, int y) { /* implement if you want to detect mouse movement */ }
         void KeyUp(int key) { player.keyUp(key); }
         void KeyDown(int key) { player.keyDown(key); }
+        void checkCollisions();
     private:
         Surface* screen;
         TileMap tileMap;
