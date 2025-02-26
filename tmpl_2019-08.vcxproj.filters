@@ -28,6 +28,7 @@
     <ClInclude Include="AABB.hpp" />
     <ClInclude Include="Circle.hpp" />
     <ClInclude Include="Player.hpp" />
+    <ClInclude Include="Line.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
