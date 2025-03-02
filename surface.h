@@ -45,6 +45,7 @@ public:
 	~Surface();
 	// member data access
 	Pixel* GetBuffer() { return m_Buffer; }
+	Pixel Sample(int u, int v) const;
 	Pixel Sample(float u, float v) const;
 	void SetBuffer( Pixel* a_Buffer ) { m_Buffer = a_Buffer; }
 	int GetWidth() { return m_Width; }

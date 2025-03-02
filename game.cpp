@@ -3,6 +3,7 @@
 #include <cstdio> //printf
 #include <cassert>
 #include <algorithm>
+#include <windows.h>
 
 namespace Tmpl8
 {
@@ -20,13 +21,42 @@ namespace Tmpl8
     {
     }
 
-    static Sprite rotatingGun(new Surface("assets/aagun.tga"), 36);
-    static int frame = 0;
-
     // -----------------------------------------------------------
     // Main application tick function
     // -----------------------------------------------------------
     Surface image("assets/ball.png");
+    Surface RGB_Led("assets/VRGB_Led.png");
+
+    union Color
+    {
+        Color() = default;
+        Color(Pixel p)
+            : p{p}
+        {}
+
+        Pixel p;
+        struct
+        {
+            unsigned char b, g, r, a;
+        };
+
+        Color operator*(Color rhs) const
+        {
+            Color res;
+
+            res.b = b * rhs.b / 255;
+            res.g = g * rhs.g / 255;
+            res.r = r * rhs.r / 255;
+            res.a = a * rhs.a / 255;
+
+            return res;
+        }
+
+        operator Pixel() const
+        {
+            return p;
+        }
+    };
 
     // -----------------------------------------------------------
     // Main application tick function
@@ -39,41 +69,23 @@ namespace Tmpl8
         float sw = static_cast<float>(screen->GetWidth());
         float sh = static_cast<float>(screen->GetHeight());
 
-        for (int y = 0; y < screen->GetHeight(); ++y)
+        for (int y = 0; y < screen->GetHeight(); y += RGB_Led.GetHeight())
         {
-            for (int x = 0; x < screen->GetWidth(); ++x)
+            for (int x = 0; x < screen->GetWidth(); x += RGB_Led.GetWidth())
             {
                 float u = x / sw;
                 float v = y / sh;
-                Pixel p = image.Sample(u, v);
 
-                switch (y % 11)
+                Color p = image.Sample(u, v);
+                for (int i = 0; i < RGB_Led.GetHeight(); ++i)
                 {
-                default:
-                case 0:
-                case 1:
-                case 2:
-                    p = p & 0xff0000;
-                    break;
-                case 3:
-                    p = 0;
-                    break;
-                case 4:
-                case 5:
-                case 6:
-                    p = p & 0x00ff00;
-                    break;
-                case 7:
-                    p = 0;
-                    break;
-                case 8:
-                case 9:
-                case 10:
-                    p = p & 0x0000ff;
-                    break;
+                    for (int j = 0; j < RGB_Led.GetWidth(); ++j)
+                    {
+                        Color led = RGB_Led.Sample(j, i);
+                        screen->Plot(x + j, y + i, p * led);
+                    }
                 }
 
-                screen->Plot(x, y, p);
             }
         }
     }
