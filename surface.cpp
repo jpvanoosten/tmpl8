@@ -84,6 +84,14 @@ namespace Tmpl8 {
         }
     }
 
+    Pixel Surface::Sample(float u, float v) const
+    {
+        size_t x = static_cast<size_t>( u * static_cast<float>( m_Width ) ) % m_Width;
+        size_t y = static_cast<size_t>( v * static_cast<float>( m_Height ) ) % m_Height;
+
+        return m_Buffer[y * m_Width + x];
+    }
+
     void Surface::Clear(Pixel a_Color)
     {
         int s = m_Width * m_Height;
