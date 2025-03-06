@@ -85,91 +85,45 @@ namespace Tmpl8
 
         for (auto& collider : colliders)
         {
+            // Source: https:://grok.com (March 6, 2025). "What are the basic steps to implementing 2D collision detection and response with AABBs?"
             if (playerAABB.intersect(collider))
             {
-                if (std::abs(v.x) > std::abs(v.y) )
+                float xOverlap = std::min(playerAABB.max.x, collider.max.x) - std::max(playerAABB.min.x, collider.min.x) + 1;
+                float yOverlap = std::min(playerAABB.max.y, collider.max.y) - std::max(playerAABB.min.y, collider.min.y) + 1;
+
+                Tmpl8::vec2 normal{ 0 };
+
+                if (xOverlap < yOverlap)
                 {
-                    // First check left edge of collider.
-                    if (v.x >= 0)
+                    // The "minimum translation vector" (MTV) is the x-axis.
+
+                    // Player is to the left of the collider.
+                    if (playerAABB.min.x < collider.min.x)
                     {
-                        if (playerAABB.intersect(collider.left().shrink(shrink)))
-                        {
-                            float diff = playerAABB.max.x - collider.min.x + 1;
-                            p.x -= diff;
-                            v.x = 0.0f;
-                        }
+                        normal = { -1, 0 };
                     }
-                    if (v.x <= 0)
+                    else // Player is to the right of the collider.
                     {
-                        if (playerAABB.intersect(collider.right().shrink(shrink)))
-                        {
-                            float diff = collider.max.x - playerAABB.min.x + 1;
-                            p.x -= diff;
-                            v.x = 0.0f;
-                        }
+                        normal = { 1, 0 };
                     }
-                    if (v.y >= 0) // Player is moving down.
-                    {
-                        if (playerAABB.intersect(collider.top().shrink(shrink)))
-                        {
-                            // Move the player up until it's no longer colliding.
-                            float diff = playerAABB.max.y - collider.min.y + 1;
-                            p.y -= diff;
-                            v.y = 0.0f;
-                        }
-                    }
-                    if (v.y >= 0) // Player is moving up.
-                    {
-                        if (playerAABB.intersect(collider.bottom().shrink(shrink)))
-                        {
-                            // Move the player up until it's no longer colliding.
-                            float diff = collider.max.y - playerAABB.min.y + 1;
-                            p.y -= diff;
-                            v.y = 0.0f;
-                        }
-                    }
+                    // Zero the x-velocity.
+                    v.x = 0.0f;
                 }
                 else
                 {
-                    if (v.y >= 0) // Player is moving down.
+                    // The players is above the collider.
+                    if (playerAABB.min.y < collider.min.y)
                     {
-                        if (playerAABB.intersect(collider.top().shrink(10)))
-                        {
-                            // Move the player up until it's no longer colliding.
-                            float diff = playerAABB.max.y - collider.min.y + 1;
-                            p.y -= diff;
-                            v.y = 0.0f;
-                        }
+                        normal = { 0, -1 };
                     }
-                    if (v.y >= 0) // Player is moving up.
+                    else
                     {
-                        if (playerAABB.intersect(collider.bottom().shrink(shrink)))
-                        {
-                            // Move the player up until it's no longer colliding.
-                            float diff = collider.max.y - playerAABB.min.y + 1;
-                            p.y -= diff;
-                            v.y = 0.0f;
-                        }
+                        normal = { 0, 1 };
                     }
-                    if (v.x >= 0)
-                    {
-                        if (playerAABB.intersect(collider.left().shrink(shrink)))
-                        {
-                            float diff = playerAABB.max.x - collider.min.x + 1;
-                            p.x -= diff;
-                            v.x = 0.0f;
-                        }
-                    }
-                    if (v.x <= 0)
-                    {
-                        if (playerAABB.intersect(collider.right().shrink(shrink)))
-                        {
-                            float diff = collider.max.x - playerAABB.min.x + 1;
-                            p.x -= diff;
-                            v.x = 0.0f;
-                        }
-                    }
+                    v.y = 0.0f;
                 }
+
+                p += Tmpl8::vec2{xOverlap, yOverlap} * normal;
             }
         }
 
