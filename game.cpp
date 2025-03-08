@@ -115,6 +115,7 @@ namespace Tmpl8
                     if (playerAABB.min.y < collider.min.y)
                     {
                         normal = { 0, -1 };
+                        player.setIsGrounded(true);
                     }
                     else
                     {

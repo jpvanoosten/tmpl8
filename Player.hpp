@@ -54,16 +54,38 @@ public:
         return v;
     }
 
-    void setVelocity( const Tmpl8::vec2& velocity)
+    void setVelocity(const Tmpl8::vec2& velocity)
     {
         v = velocity;
     }
 
+    bool isGrounded() const
+    {
+        return grounded;
+    }
+
+    void setIsGrounded(bool _grounded)
+    {
+        grounded = _grounded;
+    }
+
 private:
-    Tmpl8::vec2 p{0}; // Current position of the player.
-    Tmpl8::vec2 v{0}; // Velocity of the player.
-    static const float playerSpeed; // Player speed in pixels/second
-    AABB aabb;
-    float w = 0.0f, a = 0.0f, s = 0.0f, d = 0.0f;
-    bool space = false;
+    static const float moveSpeed; // Player speed in pixels/second
+    static const float acceleration; // Directional acceleration.
+    static const float deceleration; // Deceleration/drag.
+    static const float jumpHeight; // Maximum jump height in pixels.
+    static const float jumpTime; // Time (in seconds) to the apex of the jump.
+    static const float gravity; // Downward gravitational force.
+    static const float jumpForce; // Upward force to apply when jumping.
+    static const float maxFallSpeed; // Clamp fall speed to a maximum value.
+    static const float coyoteTime; // How long (in seconds) the player can still jump after falling.
+
+    Tmpl8::vec2 p{ 0 }; // Current position of the player.
+    Tmpl8::vec2 v{ 0 }; // Velocity of the player.
+    AABB aabb; // AABB of the player.
+    bool grounded = false; // True if the player is touching the ground.
+    float coyoteTimer = 0.0f; // Timer for allowing the player to jump.
+
+    float w = 0.0f, a = 0.0f, s = 0.0f, d = 0.0f; // Directional controls.
+    bool space = false; // Jump.
 };
