@@ -78,18 +78,19 @@ namespace Tmpl8
 
     void Game::checkCollisions()
     {
-        const float shrink = 10;
         AABB playerAABB = player.getAABB();
         Tmpl8::vec2 v = player.getVelocity();
         Tmpl8::vec2 p = player.getPosition();
+
+        player.setIsGrounded(false);
 
         for (auto& collider : colliders)
         {
             // Source: https:://grok.com (March 6, 2025). "What are the basic steps to implementing 2D collision detection and response with AABBs?"
             if (playerAABB.intersect(collider))
             {
-                float xOverlap = std::min(playerAABB.max.x, collider.max.x) - std::max(playerAABB.min.x, collider.min.x) + 1;
-                float yOverlap = std::min(playerAABB.max.y, collider.max.y) - std::max(playerAABB.min.y, collider.min.y) + 1;
+                float xOverlap = std::min(playerAABB.max.x, collider.max.x) - std::max(playerAABB.min.x, collider.min.x);
+                float yOverlap = std::min(playerAABB.max.y, collider.max.y) - std::max(playerAABB.min.y, collider.min.y);
 
                 Tmpl8::vec2 normal{ 0 };
 

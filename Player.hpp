@@ -82,6 +82,7 @@ private:
 
     Tmpl8::vec2 p{ 0 }; // Current position of the player.
     Tmpl8::vec2 v{ 0 }; // Velocity of the player.
+
     AABB aabb; // AABB of the player.
     bool grounded = false; // True if the player is touching the ground.
     float coyoteTimer = 0.0f; // Timer for allowing the player to jump.

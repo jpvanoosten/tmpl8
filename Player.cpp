@@ -7,14 +7,14 @@ const float Player::acceleration = 2000.0f; // Directional acceleration.
 const float Player::deceleration = 5000.0f; // Deceleration/drag.
 const float Player::jumpHeight = 100.0f; // Maximum jump height (in pixels).
 const float Player::jumpTime = 0.25f; // Time (in seconds) to the apex of the jump.
+const float Player::maxFallSpeed = 1500.0f; // Clamp fall speed to a maximum value.
+const float Player::coyoteTime = 0.1f; // How long (in seconds) the player can still jump after falling.
 
 // Gravity and jump speed are computed to achieve the desired jump parabola.
 // Source: https://2dengine.com/?p=platformers#Jumping
 // Source: https://jobtalle.com/2d_platformer_physics.html
 const float Player::gravity = 2.0f * jumpHeight / ( jumpTime * jumpTime ); // Downward gravitational force.
 const float Player::jumpForce = std::sqrt(2.0f * jumpHeight * gravity); // Upward force to apply when jumping.
-const float Player::maxFallSpeed = 1500.0f; // Clamp fall speed to a maximum value.
-const float Player::coyoteTime = 0.1f; // How long (in seconds) the player can still jump after falling.
 
 // Source: https://grok.com (March 8th, 2025). "What is the best way to implement a character controller for a 2D platforming game?"
 float sign(float v)
