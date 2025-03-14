@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Camera.hpp"
 #include "AABB.hpp"
 
 #include "surface.h"
@@ -14,7 +15,7 @@ public:
     /// Draw the player.
     /// </summary>
     /// <param name="screen"></param>
-    void draw(Tmpl8::Surface& screen);
+    void draw(Tmpl8::Surface& screen, const Camera& camera);
 
     /// <summary>
     /// Update the player.

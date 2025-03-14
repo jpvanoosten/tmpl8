@@ -1,11 +1,7 @@
 #include "game.h"
-
-#include <cassert>
-
 #include "surface.h"
 
 #include "AABB.hpp"
-#include "Circle.hpp"
 
 namespace Tmpl8
 {
@@ -33,10 +29,12 @@ namespace Tmpl8
         AABB playerAABB{ {-20, -80}, {20, 0} };
         player = Player{ playerAABB, {ScreenWidth / 2, ScreenHeight / 2} };
 
+        cameraController = CameraController(camera, player);
+
         // Setup colliders
         colliders = {
             AABB::fromXYWH(300, 475, 197, 36),
-            AABB::fromXYWH(534, 383, 102, 36),
+            AABB::fromXYWH(550, 383, 102, 36),
             AABB::fromXYWH(656, 311, 112, 36),
             AABB::fromXYWH(-1e3f, ScreenHeight-1, 1e7f, 1e7f),
         };
@@ -65,14 +63,21 @@ namespace Tmpl8
 
         checkCollisions();
 
+        cameraController.update(deltaTime);
+
+        // Update camera based on player's x coordinate.
+        float deltaX = player.getPosition().x - ScreenWidth / 2.0f;
+        camera.setPos({ deltaX, 0 });
+
         // Render game.
         screen->Clear(0);
 
-        player.draw(*screen);
+        player.draw(*screen, camera);
+
 
         for (auto& collider : colliders)
         {
-            screen->Box(collider, 0xFF0000);
+            screen->Box(camera.toScreenSpace(collider), 0xFF0000);
         }
     }
 

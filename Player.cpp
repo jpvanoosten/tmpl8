@@ -1,4 +1,5 @@
 #include "Player.hpp"
+
 #include <SDL_scancode.h>
 #include <cmath>
 
@@ -42,9 +43,9 @@ Player::Player(const AABB& aabb, const Tmpl8::vec2& position)
 {
 }
 
-void Player::draw(Tmpl8::Surface& screen)
+void Player::draw(Tmpl8::Surface& screen, const Camera& camera)
 {
-    screen.Box(aabb.at(p), 0x0000ff);
+    screen.Box(camera.toScreenSpace(aabb.at(p)), 0x0000ff);
 }
 
 void Player::update(float deltaTime)

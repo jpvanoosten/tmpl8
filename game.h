@@ -3,6 +3,8 @@
 #include "TileMap.h"
 #include "template.h"
 #include "Player.hpp"
+#include "Camera.hpp"
+#include "CameraController.hpp"
 
 namespace Tmpl8 {
 
@@ -24,6 +26,8 @@ namespace Tmpl8 {
         Surface* screen;
         TileMap tileMap;
         Player player;
+        Camera camera;
+        CameraController cameraController;
         std::vector<AABB> colliders;
     };
 
