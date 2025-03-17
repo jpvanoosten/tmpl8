@@ -12,6 +12,7 @@
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="Sprite2D.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="CameraController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -29,6 +30,9 @@
     <ClInclude Include="Circle.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Line.hpp" />
+    <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="CameraController.hpp" />
+    <ClInclude Include="Math.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
@@ -40,8 +44,5 @@
       <Filter>template code</Filter>
     </Text>
     <Text Include="settings.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="bindat.bin" />
   </ItemGroup>
 </Project>

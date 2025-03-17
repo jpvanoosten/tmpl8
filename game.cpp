@@ -65,10 +65,6 @@ namespace Tmpl8
 
         cameraController.update(deltaTime);
 
-        // Update camera based on player's x coordinate.
-        float deltaX = player.getPosition().x - ScreenWidth / 2.0f;
-        camera.setPos({ deltaX, 0 });
-
         // Render game.
         screen->Clear(0);
 

@@ -242,6 +242,7 @@
     <ClInclude Include="Circle.hpp" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Line.hpp" />
+    <ClInclude Include="Math.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Rect.hpp" />
     <ClInclude Include="Sprite2D.hpp" />

@@ -1,7 +1,9 @@
 #include "Player.hpp"
+#include "Math.hpp"
+
+#include <cmath> // for std::sqrt
 
 #include <SDL_scancode.h>
-#include <cmath>
 
 const float Player::moveSpeed = 500.0f; // Player speed in pixels/second
 const float Player::acceleration = 2000.0f; // Directional acceleration.
@@ -16,26 +18,6 @@ const float Player::coyoteTime = 0.1f; // How long (in seconds) the player can s
 // Source: https://jobtalle.com/2d_platformer_physics.html
 const float Player::gravity = 2.0f * jumpHeight / ( jumpTime * jumpTime ); // Downward gravitational force.
 const float Player::jumpForce = std::sqrt(2.0f * jumpHeight * gravity); // Upward force to apply when jumping.
-
-// Source: https://grok.com (March 8th, 2025). "What is the best way to implement a character controller for a 2D platforming game?"
-float sign(float v)
-{
-    return v > 0.0f ? 1.0f : v < 0.0f ? -1.0f : 0.0f;
-}
-
-// Source: https://grok.com (March 8th, 2025). "What is the best way to implement a character controller for a 2D platforming game?"
-float moveToward(float current, float target, float maxDelta)
-{
-    // Calculate the difference between current and target.
-    float diff = target - current;
-
-    // If the difference is smaller than maxDelta, just return the target.
-    if (std::abs(diff) < maxDelta)
-        return target;
-
-    // Otherwise, move by maxDelta in the direction of the target.
-    return current + sign(diff) * maxDelta;
-}
 
 Player::Player(const AABB& aabb, const Tmpl8::vec2& position)
     : p{ position }

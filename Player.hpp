@@ -70,7 +70,6 @@ public:
         grounded = _grounded;
     }
 
-private:
     static const float moveSpeed; // Player speed in pixels/second
     static const float acceleration; // Directional acceleration.
     static const float deceleration; // Deceleration/drag.
@@ -81,6 +80,7 @@ private:
     static const float maxFallSpeed; // Clamp fall speed to a maximum value.
     static const float coyoteTime; // How long (in seconds) the player can still jump after falling.
 
+private:
     Tmpl8::vec2 p{ 0 }; // Current position of the player.
     Tmpl8::vec2 v{ 0 }; // Velocity of the player.
 
