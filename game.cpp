@@ -44,15 +44,18 @@ namespace Tmpl8
             {
                 pos.y = ScreenHeight - r - 1;
                 vel.y *= -0.50f;
+                vel.x *= 0.95f;
             }
             // Test collision with the right side of the screen.
             if(pos.x < r)
             {
                 pos.x = r;
+                vel.x = -vel.x;
             }
             else if(pos.x >= ScreenWidth - r)
             {
                 pos.x = ScreenWidth - r - 1;
+                vel.x = -vel.x;
             }
 
             // Update ball.
@@ -64,6 +67,10 @@ namespace Tmpl8
         {
             // Hit!
             int i = 3;
+            auto n = (ball2.getPos() - ball1.getPos()).normalized();
+            // TODO: fix ball1 position to not colliding.
+            ball1.setVelocity(-n * ball1.getVel().length() * 0.95f);
+            ball2.setVelocity(n * 200);
             // Assignment: Finish this function!
         }
 

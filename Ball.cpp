@@ -41,7 +41,7 @@ void Ball::setRadius(float _radius)
 bool Ball::checkCollision(const Ball& other) const
 {
     Tmpl8::vec2 d = other.position - position; // Displacement.
-    const float l = d.sqrLentgh();
+    const float l = d.sqrLength();
     const float r = other.radius + radius; // Sum of the radii.
 
     return l < (r * r);
