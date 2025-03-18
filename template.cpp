@@ -382,19 +382,19 @@ int main( int argc, char **argv )
 					exitapp = 1;
 					// find other keys here: http://sdl.beuc.net/sdl.wiki/SDLKey
 				}
-				game->KeyDown( event.key.keysym.scancode );
+				game->KeyDown( event.key );
 				break;
 			case SDL_KEYUP:
-				game->KeyUp( event.key.keysym.scancode );
+				game->KeyUp( event.key );
 				break;
 			case SDL_MOUSEMOTION:
 				game->MouseMove( event.motion.xrel, event.motion.yrel );
 				break;
 			case SDL_MOUSEBUTTONUP:
-				game->MouseUp( event.button.button );
+				game->MouseUp( event.button );
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				game->MouseDown( event.button.button );
+				game->MouseDown( event.button );
 				break;
 			default:
 				break;

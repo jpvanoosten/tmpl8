@@ -1,24 +1,27 @@
 #include "Ball.hpp"
 #include "surface.h"
 
+#include <cmath>
+
 using namespace Tmpl8;
 
-Ball::Ball(const Tmpl8::vec2& pos, float radius)
+Ball::Ball(const Tmpl8::vec2& pos, float radius, float mass)
     : position{ pos }
     , radius{ radius }
+    , mass{ mass }
 {}
 
-const Tmpl8::vec2& Ball::getPos() const
+const Tmpl8::vec2& Ball::getPosition() const
 {
     return position;
 }
 
-void Ball::setPos(const Tmpl8::vec2& pos)
+void Ball::setPosition(const Tmpl8::vec2& pos)
 {
     position = pos;
 }
 
-const Tmpl8::vec2& Ball::getVel() const
+const Tmpl8::vec2& Ball::getVelocity() const
 {
     return velocity;
 }
@@ -26,6 +29,26 @@ const Tmpl8::vec2& Ball::getVel() const
 void Ball::setVelocity(const Tmpl8::vec2& vel)
 {
     velocity = vel;
+}
+
+const Tmpl8::vec2& Ball::getAcceleration() const
+{
+    return acceleration;
+}
+
+void Ball::setAcceleration(const Tmpl8::vec2& acc)
+{
+    acceleration = acc;
+}
+
+void Ball::addAcceleration(const Tmpl8::vec2& acc)
+{
+    acceleration += acc;
+}
+
+void Ball::addForce(const Tmpl8::vec2& force)
+{
+    acceleration += force * (1.0f / mass );
 }
 
 float Ball::getRadius() const
@@ -38,17 +61,38 @@ void Ball::setRadius(float _radius)
     radius = _radius;
 }
 
-bool Ball::checkCollision(const Ball& other) const
+float Ball::getMass() const
+{
+    return mass;
+}
+
+void Ball::setMass(float _mass)
+{
+    mass = _mass;
+}
+
+std::optional<HitInfo> Ball::checkCollision(const Ball& other) const
 {
     Tmpl8::vec2 d = other.position - position; // Displacement.
     const float l = d.sqrLength();
     const float r = other.radius + radius; // Sum of the radii.
 
-    return l < (r * r);
+    if(l < (r * r))
+    {
+        HitInfo hit;
+
+        hit.normal = d.normalized();
+        hit.depth = r - std::sqrt(l);
+
+        return hit;
+    }
+
+    return {};
 }
 
 void Ball::update(float deltaTime)
 {
+    velocity += acceleration * deltaTime;
     position += velocity * deltaTime;
 }
 

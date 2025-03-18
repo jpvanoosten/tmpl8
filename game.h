@@ -1,6 +1,10 @@
 #pragma once
 
+#include <SDL_events.h>
+
 #include "Ball.hpp"
+
+#include <vector>
 
 namespace Tmpl8 {
 
@@ -12,13 +16,14 @@ public:
 	void Init();
 	void Shutdown();
 	void Tick( float deltaTime );
-	void MouseUp( int button ) { /* implement if you want to detect mouse button presses */ }
-	void MouseDown( int button ) { /* implement if you want to detect mouse button presses */ }
+	void MouseUp(const SDL_MouseButtonEvent& event);
+	void MouseDown( const SDL_MouseButtonEvent& event ) { /* implement if you want to detect mouse button presses */ }
 	void MouseMove( int x, int y ) { /* implement if you want to detect mouse movement */ }
-	void KeyUp( int key ) { /* implement if you want to handle keys */ }
-	void KeyDown( int key ) { /* implement if you want to handle keys */ }
+	void KeyUp(const SDL_KeyboardEvent& event);
+	void KeyDown(const SDL_KeyboardEvent& event) { /* implement if you want to handle keys */ }
 private:
 	Surface* screen;
+    std::vector<Ball> balls;
 };
 
 }; // namespace Tmpl8
