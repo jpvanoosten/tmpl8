@@ -13,6 +13,7 @@ namespace Tmpl8
     void Game::Shutdown() {}
 
     const vec2 GRAVITY{ 0.0f, 400.0f }; // Force due to gravity in pixels/second.
+    const float RESTITUTION = 0.8f; // Bounciness of the balls. 1.0f is a perfect bounce, 0 is no bounce.
 
     void Game::Tick(float deltaTime)
     {
@@ -35,15 +36,15 @@ namespace Tmpl8
             if (p.y + r >= ScreenHeight)
             {
                 p.y = ScreenHeight - r;
-                v.x *= 0.95f;
-                v.y *= -0.95f;
+                v.x *= RESTITUTION;
+                v.y *= -RESTITUTION;
             }
 
             // Test collision with the left side of the screen.
             if (p.x - r <= 0)
             {
                 p.x = r;
-                v.x *= -0.95f;
+                v.x *= -RESTITUTION;
             }
 
             // Test collision with the right side of the screen.
@@ -80,8 +81,7 @@ namespace Tmpl8
                     if (velAlongNormal > 0) continue;
 
                     // Compute restitution.
-                    float e = 0.95f; // 1 is perfectly elastic, 0 is perfectly inelastic.
-                    float impulse = -(1.0f + e) * velAlongNormal;
+                    float impulse = -(1.0f + RESTITUTION) * velAlongNormal;
                     impulse /= 1.0f / balls[i].getMass() + 1.0f / balls[j].getMass();
 
                     // Apply impulse along normal
