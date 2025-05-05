@@ -9,6 +9,7 @@ namespace Tmpl8
     {
         std::shared_ptr<SpriteSheet> playerShip = std::make_shared<SpriteSheet>("assets/playership.png", 1, 9);
         tileMap = TileMap{ playerShip, 5, 5 };
+        tileMap.setOrigin({ 200, 200 });
 
         int tileIds[] = {
             0, 0, 0, 0, 0,
@@ -25,6 +26,7 @@ namespace Tmpl8
                 tileMap(x, y) = tileIds[y * 5 + x];
             }
         }
+
 
         AABB playerAABB{ {-20, -80}, {20, 0} };
         player = Player{ playerAABB, {ScreenWidth / 2, ScreenHeight / 2} };
@@ -61,14 +63,17 @@ namespace Tmpl8
 
         player.update(deltaTime);
 
-        checkCollisions();
+        checkCollisions2(); // Check the collisions of the player as a circle.
 
         cameraController.update(deltaTime);
 
         // Render game.
         screen->Clear(0);
 
+        tileMap.draw(*screen, camera);
+
         player.draw(*screen, camera);
+
 
 
         for (auto& collider : colliders)
@@ -77,6 +82,7 @@ namespace Tmpl8
         }
     }
 
+    // This version of the checkCollisions function checks the AABB of the player for collisions.
     void Game::checkCollisions()
     {
         AABB playerAABB = player.getAABB();
@@ -113,7 +119,7 @@ namespace Tmpl8
                 }
                 else
                 {
-                    // The players is above the collider.
+                    // The player is above the collider.
                     if (playerAABB.min.y < collider.min.y)
                     {
                         normal = { 0, -1 };
@@ -127,6 +133,35 @@ namespace Tmpl8
                 }
 
                 p += Tmpl8::vec2{xOverlap, yOverlap} * normal;
+            }
+        }
+
+        player.setVelocity(v);
+        player.setPosition(p);
+    }
+
+    // This version of the function checks the circle of the player.
+    void Game::checkCollisions2()
+    {
+        Circle playerCircle = player.getCircle();
+        Tmpl8::vec2 v = player.getVelocity();
+        Tmpl8::vec2 p = player.getPosition();
+
+        player.setIsGrounded(false);
+        for (auto& collider : colliders)
+        {
+            if (auto overlap = collider.overlap(playerCircle))
+            {
+                if (std::abs(overlap->x) > 0)
+                    v.x = 0.0f;
+                else
+                    v.y = 0.0f;
+
+                // Overlap normal is pointing up. Player must be on the ground.
+                if (overlap->y < 0)
+                    player.setIsGrounded(true);
+
+                p += *overlap;
             }
         }
 

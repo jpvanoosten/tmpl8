@@ -28,6 +28,11 @@ public:
         return { toScreenSpace(aabb.min), toScreenSpace(aabb.max) };
     }
 
+    Circle toScreenSpace(const Circle& circle) const
+    {
+        return { toScreenSpace(circle.position), circle.radius };
+    }
+
 private:
     Tmpl8::vec2 pos{0};
 };

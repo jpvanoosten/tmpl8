@@ -40,6 +40,11 @@ public:
         return aabb.at(p);
     }
 
+    Circle getCircle() const
+    {
+        return circle + p;
+    }
+
     void setPosition(const Tmpl8::vec2& position)
     {
         p = position;
@@ -85,6 +90,7 @@ private:
     Tmpl8::vec2 v{ 0 }; // Velocity of the player.
 
     AABB aabb; // AABB of the player.
+    Circle circle;
     bool grounded = false; // True if the player is touching the ground.
     float coyoteTimer = 0.0f; // Timer for allowing the player to jump.
 

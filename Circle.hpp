@@ -21,6 +21,11 @@ struct Circle
         return l2 < r * r;
     }
 
+    Circle operator+(const Tmpl8::vec2& p ) const
+    {
+        return { position + p, radius };
+    }
+
     Tmpl8::vec2 position{0, 0};
     float radius = 0.0f;
 };

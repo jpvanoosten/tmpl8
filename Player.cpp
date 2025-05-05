@@ -22,12 +22,14 @@ const float Player::jumpForce = std::sqrt(2.0f * jumpHeight * gravity); // Upwar
 Player::Player(const AABB& aabb, const Tmpl8::vec2& position)
     : p{ position }
     , aabb{ aabb }
+    , circle{ Tmpl8::vec2{0}, std::min(aabb.width()/2.0f, aabb.height()/2.0f) }
 {
 }
 
 void Player::draw(Tmpl8::Surface& screen, const Camera& camera)
 {
-    screen.Box(camera.toScreenSpace(aabb.at(p)), 0x0000ff);
+    //screen.Box(camera.toScreenSpace(aabb.at(p)), 0x0000ff);
+    screen.Circle(camera.toScreenSpace(circle + p), 0x0000ff);
 }
 
 void Player::update(float deltaTime)

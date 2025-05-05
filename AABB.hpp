@@ -6,6 +6,7 @@
 
 #include <cfloat>
 #include <algorithm>
+#include <optional>
 
 
 inline Tmpl8::vec2 min(const Tmpl8::vec2& a, const Tmpl8::vec2& b)
@@ -213,6 +214,59 @@ struct AABB
         return aabb.intersect(circle.position);
     }
 
+    /// <summary>
+/// Compute the minimum overlap between a 2D point and this AABB.
+/// </summary>
+/// <param name="p">The point to test for overlap.</param>
+/// <returns>The minimum overlap between the point and this AABB, or a null optional if no overlap occurs.</returns>
+    std::optional<Tmpl8::vec2> overlap(const Tmpl8::vec2& p) const noexcept
+    {
+        if (intersect(p))
+        {
+            // Compute the min/max overlap in each axis.
+            float minX = p.x - min.x;
+            float maxX = max.x - p.x;
+            float minY = p.y - min.y;
+            float maxY = max.y - p.y;
+
+            float xOverlap = std::min(minX, maxX);
+            float yOverlap = std::min(minY, maxY);
+
+            Tmpl8::vec2 n{ 0 }; // Collision normal.
+            if (xOverlap < yOverlap)
+            {
+                if (minX < maxX)
+                    n = { -1, 0 }; // Point should go left to resolve collision.
+                else
+                    n = { 1, 0 }; // Point should go right to resolve collision.
+            }
+            else
+            {
+                if (minY < maxY)
+                    n = { 0, -1 }; // Point should go up to resolve collision.
+                else
+                    n = { 0, 1 }; // Point should go down to resolve collision.
+            }
+
+            return Tmpl8::vec2{ xOverlap, yOverlap } * n;
+        }
+
+        return {};
+    }
+
+    /// <summary>
+    /// Compute the overlap between a circle and this AABB.
+    /// </summary>
+    /// <param name="circle">The circle to test for overlap.</param>
+    /// <returns>The minimum overlap between the circle and this AABB, or a null optional if no overlap occurs.</returns>
+    std::optional<Tmpl8::vec2> overlap(const Circle& circle) const noexcept
+    {
+        // Expand the AABB by the radius of the circle.
+        const AABB e{ min - Tmpl8::vec2{ circle.radius }, max + Tmpl8::vec2{ circle.radius } };
+        return e.overlap(circle.position);
+    }
+
+
     bool intersect(const Tmpl8::vec2& p0, const Tmpl8::vec2& p1) const
     {
         const Tmpl8::vec2 c = center(); // AABB center point.
@@ -237,8 +291,6 @@ struct AABB
         // No separating axis found, line must be overlapping AABB.
         return true;
     }
-
-
 
     bool intersect(const Line& l) const
     {

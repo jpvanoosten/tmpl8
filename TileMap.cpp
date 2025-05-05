@@ -1,5 +1,6 @@
 #include "TileMap.h"
 
+
 #include <cassert>
 
 TileMap::TileMap(std::shared_ptr<SpriteSheet> spriteSheet, int rows, int columns)
@@ -23,8 +24,19 @@ int TileMap::operator()(int x, int y) const
     return tiles[y * columns + x];
 }
 
-void TileMap::draw(Tmpl8::Surface& surface, int x, int y) const
+const Tmpl8::vec2& TileMap::getOrigin() const
 {
+    return origin;
+}
+
+void TileMap::setOrigin(const Tmpl8::vec2& o)
+{
+    origin = o;
+}
+
+void TileMap::draw(Tmpl8::Surface& surface, const Camera& camera) const
+{
+    auto c = camera.getPos();
     for (int i = 0; i < rows; ++i)
     {
         for (int j = 0; j < columns; ++j)
@@ -33,10 +45,11 @@ void TileMap::draw(Tmpl8::Surface& surface, int x, int y) const
             if (tileId >= 0)
             {
                 auto& sprite = spriteSheet->getSprite(tileId);
-                int tileX = j * sprite.getWidth();
-                int tileY = i * sprite.getHeight();
 
-                sprite.draw(surface, tileX + x, tileY + y);
+                int tileX = static_cast<int>( origin.x - c.x ) + j * sprite.getWidth();
+                int tileY = static_cast<int>( origin.y - c.y ) + i * sprite.getHeight();
+
+                sprite.draw(surface, tileX, tileY);
             }
         }
     }

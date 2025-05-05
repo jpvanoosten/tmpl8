@@ -22,6 +22,7 @@ namespace Tmpl8 {
         void KeyUp(int key) { player.keyUp(key); }
         void KeyDown(int key) { player.keyDown(key); }
         void checkCollisions();
+        void checkCollisions2();
     private:
         Surface* screen;
         TileMap tileMap;
