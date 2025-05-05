@@ -88,6 +88,7 @@ public:
 	vec2 operator - ( const vec2& operand ) const { return vec2( x - operand.x, y - operand.y ); }
 	vec2 operator * ( const vec2& operand ) const { return vec2( x * operand.x, y * operand.y ); }
 	vec2 operator * ( float operand ) const { return vec2( x * operand, y * operand ); }
+	vec2 operator/(float rhs) const { return { x / rhs, y / rhs }; }
 	void operator -= ( const vec2& a ) { x -= a.x; y -= a.y; }
 	void operator += ( const vec2& a ) { x += a.x; y += a.y; }
 	void operator *= ( const vec2& a ) { x *= a.x; y *= a.y; }

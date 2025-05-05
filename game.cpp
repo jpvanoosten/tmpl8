@@ -74,8 +74,6 @@ namespace Tmpl8
 
         player.draw(*screen, camera);
 
-
-
         for (auto& collider : colliders)
         {
             screen->Box(camera.toScreenSpace(collider), 0xFF0000);

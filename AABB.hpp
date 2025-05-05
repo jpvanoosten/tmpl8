@@ -5,6 +5,7 @@
 #include "template.h"
 
 #include <cfloat>
+#include <cmath>
 #include <algorithm>
 #include <optional>
 
@@ -207,18 +208,34 @@ struct AABB
             p.y <= max.y;
     }
 
+    // Find the closest point on or in this AABB to p.
+    // If p is in the AABB, this returns p.
+    Tmpl8::vec2 closestPoint(const Tmpl8::vec2& p) const
+    {
+        return {
+            std::max(min.x, std::min(p.x, max.x)),
+            std::max(min.y, std::min(p.y, max.y))
+        };
+    }
+
     // Test circle/AABB intersection.
     bool intersect(const Circle& circle) const
     {
-        AABB aabb{ min - Tmpl8::vec2{circle.radius}, max + Tmpl8::vec2{circle.radius} };
-        return aabb.intersect(circle.position);
+        // Find the closest point on the AABB to the center of the circle.
+        Tmpl8::vec2 c = closestPoint(circle.position);
+
+        // Calculate the distance between the closest point and the center of the circle.
+        Tmpl8::vec2 d = circle.position - c;
+
+        // If the distance is less than the radius, the circle is colliding with this AABB.
+        return d.sqrLentgh() <= circle.radius * circle.radius;
     }
 
     /// <summary>
-/// Compute the minimum overlap between a 2D point and this AABB.
-/// </summary>
-/// <param name="p">The point to test for overlap.</param>
-/// <returns>The minimum overlap between the point and this AABB, or a null optional if no overlap occurs.</returns>
+    /// Compute the minimum overlap between a 2D point and this AABB.
+    /// </summary>
+    /// <param name="p">The point to test for overlap.</param>
+    /// <returns>The minimum overlap between the point and this AABB, or a null optional if no overlap occurs.</returns>
     std::optional<Tmpl8::vec2> overlap(const Tmpl8::vec2& p) const noexcept
     {
         if (intersect(p))
@@ -248,7 +265,7 @@ struct AABB
                     n = { 0, 1 }; // Point should go down to resolve collision.
             }
 
-            return Tmpl8::vec2{ xOverlap, yOverlap } * n;
+            return Tmpl8::vec2{ xOverlap, yOverlap } *n;
         }
 
         return {};
@@ -261,11 +278,61 @@ struct AABB
     /// <returns>The minimum overlap between the circle and this AABB, or a null optional if no overlap occurs.</returns>
     std::optional<Tmpl8::vec2> overlap(const Circle& circle) const noexcept
     {
-        // Expand the AABB by the radius of the circle.
-        const AABB e{ min - Tmpl8::vec2{ circle.radius }, max + Tmpl8::vec2{ circle.radius } };
-        return e.overlap(circle.position);
-    }
+        Tmpl8::vec2 closestPoint = AABB::closestPoint(circle.position);
+        Tmpl8::vec2 d = circle.position - closestPoint;
+        float squaredDistance = d.sqrLentgh(); // Squared length between the closest point and the center of the circle.
 
+        if (squaredDistance <= circle.radius * circle.radius)
+        {
+            Tmpl8::vec2 mtv; // Compute the minimum translation vector.
+
+            // If the circle's center is inside the AABB or almost on the boundary
+            if (squaredDistance == 0.0f)
+            {
+                // Compute the min/max overlap in each axis.
+                float minX = circle.position.x - min.x;
+                float maxX = max.x - circle.position.x;
+                float minY = circle.position.y - min.y;
+                float maxY = max.y - circle.position.y;
+
+                float xOverlap = std::min(minX, maxX);
+                float yOverlap = std::min(minY, maxY);
+
+                if (xOverlap < yOverlap)
+                {
+                    if (minX < maxX)
+                        mtv = { -circle.radius, 0.0f };
+                    else
+                        mtv = { circle.radius, 0.0f };
+                }
+                else
+                {
+                    if (minY < maxY)
+                        mtv = { 0.0f, -circle.radius };
+                    else
+                        mtv = { 0.0f, circle.radius };
+                }
+            }
+            else
+            {
+                // The center of the circle is outside the AABB.
+                float distance = std::sqrt(squaredDistance);
+                if (distance > 0.0f)
+                {
+                    float penetration = circle.radius - distance + 1.0f; // Penetration depth.
+                    mtv = (d / distance) * penetration;
+                }
+                else
+                {
+                    mtv = { circle.radius, 0.0f };
+                }
+            }
+
+            return mtv;
+        }
+
+        return {}; // No intersection.
+    }
 
     bool intersect(const Tmpl8::vec2& p0, const Tmpl8::vec2& p1) const
     {
