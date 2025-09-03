@@ -419,7 +419,7 @@ void Sprite::Draw( Surface* a_Target, int a_X, int a_Y )
 				for ( int x = xs; x < width; x++ )
 				{
 					const Pixel c1 = *(src + x);
-					if (c1 & 0xffffff) *(dest + addr + x) = c1;
+					if (c1 & 0xff000000) *(dest + addr + x) = c1;
 				}
 			}
 			addr += dpitch;
